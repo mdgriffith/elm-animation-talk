@@ -55,20 +55,6 @@ type Slide
         }
 
 
-initialSubStyle =
-    Animation.style
-        [ Animation.opacity 1
-        , Animation.display Animation.block
-        ]
-
-
-initialStyle =
-    Animation.style
-        [ Animation.opacity 0
-        , Animation.display Animation.none
-        ]
-
-
 type Step
     = Code Animation.State String
     | BulletPoints Animation.State (List String)
@@ -226,7 +212,7 @@ update message model =
             if code == 39 then
                 --right arrow
                 update Forward model
-            else if code == 40 then
+            else if code == 37 then
                 --left arrow
                 update Back model
             else
@@ -235,11 +221,10 @@ update message model =
         Forward ->
             let
                 newIndex =
-                    Debug.log "new Index" <|
-                        if model.slideIndex < List.length model.slides - 1 then
-                            model.slideIndex + 1
-                        else
-                            0
+                    if model.slideIndex < List.length model.slides - 1 then
+                        model.slideIndex + 1
+                    else
+                        0
 
                 newSlides =
                     List.indexedMap
@@ -254,7 +239,48 @@ update message model =
                                             [ Animation.opacity 1
                                             ]
                                         ]
-                            else if i == newIndex - 1 then
+                            else if i == model.slideIndex then
+                                animateSlide slide <|
+                                    Animation.interrupt
+                                        [ Animation.set
+                                            [ Animation.opacity 0
+                                            , Animation.display Animation.none
+                                            ]
+                                        ]
+                            else
+                                slide
+                        )
+                        model.slides
+            in
+                ( { model
+                    | slideIndex = newIndex
+                    , slides = newSlides
+                  }
+                , Cmd.none
+                )
+
+        Back ->
+            let
+                newIndex =
+                    if model.slideIndex > 0 then
+                        model.slideIndex - 1
+                    else
+                        List.length model.slides - 1
+
+                newSlides =
+                    List.indexedMap
+                        (\i slide ->
+                            if i == newIndex then
+                                animateSlide slide <|
+                                    Animation.interrupt
+                                        [ Animation.set
+                                            [ Animation.display Animation.block
+                                            ]
+                                        , Animation.to
+                                            [ Animation.opacity 1
+                                            ]
+                                        ]
+                            else if i == model.slideIndex then
                                 animateSlide slide <|
                                     Animation.interrupt
                                         [ Animation.set
@@ -302,9 +328,6 @@ update message model =
         --    ( { model | slides = newSlides }
         --    , Cmd.none
         --    )
-        Back ->
-            ( model, Cmd.none )
-
         Animate animMsg ->
             let
                 annulus =
@@ -415,7 +438,7 @@ viewStep : Step -> Html Msg
 viewStep step =
     case step of
         Code style content ->
-            code (Animation.render style ++ [ Style.code ])
+            Html.code (Animation.render style ++ [ Style.code ])
                 [ text content
                 ]
 
@@ -430,8 +453,21 @@ viewStep step =
                     (List.map renderPoints points)
 
 
+initialSubStyle =
+    Animation.style
+        [ Animation.opacity 1
+        ]
+
+
+initialStyle =
+    Animation.style
+        [ Animation.opacity 0
+        , Animation.display Animation.none
+        ]
+
+
 someCode str =
-    someCode str
+    Code initialSubStyle str
 
 
 bulletPoints points =
@@ -526,7 +562,7 @@ Animation.interrupt -- or Animation.queue
                 [ bulletPoints
                     [ "Stiffness - How fast does it move?"
                     , "Damping - How fast does it settle?"
-                    , "Duration is a secondary property of the spring.  You don't specify it."
+                    , "Duration is a secondary property of the spring."
                     ]
                 ]
         }
@@ -534,16 +570,7 @@ Animation.interrupt -- or Animation.queue
         { title = "Animating Cool Stuff!"
         , hiddenNote = ""
         , style = initialStyle
-        , steps =
-            Just
-                [ someCode """
-Animation.to
-  [ Animation.blur (px 5)
-  , Animation.greyscale (100)
-  ]
-
-                    """
-                ]
+        , steps = Nothing
         }
     , Stepped
         { title = "Like CSS Filters!"

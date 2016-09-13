@@ -15396,14 +15396,17 @@ var _user$project$Main$thanks = function (model) {
 					]))
 			]));
 };
-var _user$project$Main$someCode = function (str) {
-	someCode:
-	while (true) {
-		var _v0 = str;
-		str = _v0;
-		continue someCode;
-	}
-};
+var _user$project$Main$initialStyle = _user$project$Animation$style(
+	_elm_lang$core$Native_List.fromArray(
+		[
+			_user$project$Animation$opacity(0),
+			_user$project$Animation$display(_user$project$Animation$none)
+		]));
+var _user$project$Main$initialSubStyle = _user$project$Animation$style(
+	_elm_lang$core$Native_List.fromArray(
+		[
+			_user$project$Animation$opacity(1)
+		]));
 var _user$project$Main$viewStep = function (step) {
 	var _p0 = step;
 	if (_p0.ctor === 'Code') {
@@ -15507,18 +15510,6 @@ var _user$project$Main$view = function (model) {
 					model.slides))
 			]));
 };
-var _user$project$Main$initialStyle = _user$project$Animation$style(
-	_elm_lang$core$Native_List.fromArray(
-		[
-			_user$project$Animation$opacity(0),
-			_user$project$Animation$display(_user$project$Animation$none)
-		]));
-var _user$project$Main$initialSubStyle = _user$project$Animation$style(
-	_elm_lang$core$Native_List.fromArray(
-		[
-			_user$project$Animation$opacity(1),
-			_user$project$Animation$display(_user$project$Animation$block)
-		]));
 var _user$project$Main_ops = _user$project$Main_ops || {};
 _user$project$Main_ops['=>'] = F2(
 	function (v0, v1) {
@@ -15669,29 +15660,26 @@ var _user$project$Main$update = F2(
 				case 'Key':
 					var _p8 = _p7._0;
 					if (_elm_lang$core$Native_Utils.eq(_p8, 39)) {
-						var _v6 = _user$project$Main$Forward,
-							_v7 = model;
-						message = _v6;
-						model = _v7;
+						var _v5 = _user$project$Main$Forward,
+							_v6 = model;
+						message = _v5;
+						model = _v6;
 						continue update;
 					} else {
-						if (_elm_lang$core$Native_Utils.eq(_p8, 40)) {
-							var _v8 = _user$project$Main$Back,
-								_v9 = model;
-							message = _v8;
-							model = _v9;
+						if (_elm_lang$core$Native_Utils.eq(_p8, 37)) {
+							var _v7 = _user$project$Main$Back,
+								_v8 = model;
+							message = _v7;
+							model = _v8;
 							continue update;
 						} else {
 							return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 						}
 					}
 				case 'Forward':
-					var newIndex = A2(
-						_elm_lang$core$Debug$log,
-						'new Index',
-						(_elm_lang$core$Native_Utils.cmp(
-							model.slideIndex,
-							_elm_lang$core$List$length(model.slides) - 1) < 0) ? (model.slideIndex + 1) : 0);
+					var newIndex = (_elm_lang$core$Native_Utils.cmp(
+						model.slideIndex,
+						_elm_lang$core$List$length(model.slides) - 1) < 0) ? (model.slideIndex + 1) : 0;
 					var newSlides = A2(
 						_elm_lang$core$List$indexedMap,
 						F2(
@@ -15712,7 +15700,7 @@ var _user$project$Main$update = F2(
 													[
 														_user$project$Animation$opacity(1)
 													]))
-											]))) : (_elm_lang$core$Native_Utils.eq(i, newIndex - 1) ? A2(
+											]))) : (_elm_lang$core$Native_Utils.eq(i, model.slideIndex) ? A2(
 									_user$project$Main$animateSlide,
 									slide,
 									_user$project$Animation$interrupt(
@@ -15735,7 +15723,52 @@ var _user$project$Main$update = F2(
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				case 'Back':
-					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+					var newIndex = A2(
+						_elm_lang$core$Debug$log,
+						'back',
+						(_elm_lang$core$Native_Utils.cmp(model.slideIndex, 0) > 0) ? (model.slideIndex - 1) : (_elm_lang$core$List$length(model.slides) - 1));
+					var newSlides = A2(
+						_elm_lang$core$List$indexedMap,
+						F2(
+							function (i, slide) {
+								return _elm_lang$core$Native_Utils.eq(i, newIndex) ? A2(
+									_user$project$Main$animateSlide,
+									slide,
+									_user$project$Animation$interrupt(
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_user$project$Animation$set(
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_user$project$Animation$display(_user$project$Animation$block)
+													])),
+												_user$project$Animation$to(
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_user$project$Animation$opacity(1)
+													]))
+											]))) : (_elm_lang$core$Native_Utils.eq(i, model.slideIndex) ? A2(
+									_user$project$Main$animateSlide,
+									slide,
+									_user$project$Animation$interrupt(
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_user$project$Animation$set(
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_user$project$Animation$opacity(0),
+														_user$project$Animation$display(_user$project$Animation$none)
+													]))
+											]))) : slide);
+							}),
+						model.slides);
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{slideIndex: newIndex, slides: newSlides}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
 				default:
 					var _p12 = _p7._0;
 					var slides = A2(
@@ -15788,6 +15821,13 @@ var _user$project$Main$BulletPoints = F2(
 	});
 var _user$project$Main$bulletPoints = function (points) {
 	return A2(_user$project$Main$BulletPoints, _user$project$Main$initialSubStyle, points);
+};
+var _user$project$Main$Code = F2(
+	function (a, b) {
+		return {ctor: 'Code', _0: a, _1: b};
+	});
+var _user$project$Main$someCode = function (str) {
+	return A2(_user$project$Main$Code, _user$project$Main$initialSubStyle, str);
 };
 var _user$project$Main$slides = _elm_lang$core$Native_List.fromArray(
 	[
@@ -15865,20 +15905,11 @@ var _user$project$Main$slides = _elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$Main$bulletPoints(
 						_elm_lang$core$Native_List.fromArray(
-							['Stiffness - How fast does it move?', 'Damping - How fast does it settle?', 'Duration is a secondary property of the spring.  You don\'t specify it.']))
+							['Stiffness - How fast does it move?', 'Damping - How fast does it settle?', 'Duration is a secondary property of the spring.']))
 					]))
 		}),
 		_user$project$Main$Stepped(
-		{
-			title: 'Animating Cool Stuff!',
-			hiddenNote: '',
-			style: _user$project$Main$initialStyle,
-			steps: _elm_lang$core$Maybe$Just(
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_user$project$Main$someCode('\nAnimation.to\n  [ Animation.blur (px 5)\n  , Animation.greyscale (100)\n  ]\n\n                    ')
-					]))
-		}),
+		{title: 'Animating Cool Stuff!', hiddenNote: '', style: _user$project$Main$initialStyle, steps: _elm_lang$core$Maybe$Nothing}),
 		_user$project$Main$Stepped(
 		{
 			title: 'Like CSS Filters!',
@@ -15990,10 +16021,6 @@ var _user$project$Main$main = {
 			}
 		})
 };
-var _user$project$Main$Code = F2(
-	function (a, b) {
-		return {ctor: 'Code', _0: a, _1: b};
-	});
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 _elm_lang$core$Native_Platform.addPublicModule(Elm['Main'], 'Main', typeof _user$project$Main$main === 'undefined' ? null : _user$project$Main$main);
