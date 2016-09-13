@@ -11,6 +11,7 @@ import Style
 import Svg
 import Svg.Attributes
 import Mouse
+import Keyboard
 
 
 (=>) =
@@ -19,6 +20,9 @@ import Mouse
 
 type Msg
     = Animate Animation.Msg
+    | Forward
+    | Back
+    | Key Int
 
 
 type alias Model =
@@ -33,6 +37,7 @@ type alias Model =
         , global : Animation.State
         }
     , slides : List Slide
+    , slideIndex : Int
     }
 
 
@@ -41,6 +46,7 @@ type Slide
         { title : String
         , steps : Maybe (List Step)
         , hiddenNote : String
+        , style : Animation.State
         }
     | Custom
         { html : Model -> Html Msg
@@ -49,32 +55,256 @@ type Slide
         }
 
 
-makeContent txt =
-    { style = initialStyle
-    , content = txt
-    , focus = False
-    }
+initialSubStyle =
+    Animation.style
+        [ Animation.opacity 1
+        , Animation.display Animation.block
+        ]
 
 
 initialStyle =
-    Animation.style [ Animation.opacity 1 ]
+    Animation.style
+        [ Animation.opacity 0
+        , Animation.display Animation.none
+        ]
 
 
 type Step
-    = Code StepContent
-    | BulletPoints (List StepContent)
+    = Code Animation.State String
+    | BulletPoints Animation.State (List String)
 
 
-type alias StepContent =
-    { style : Animation.State
-    , content : String
-    , focus : Bool
-    }
+
+--isFocused : Slide -> Bool
+--isFocused slide =
+--    case slide of
+--        Custom frame ->
+--            frame.focus
+--        Stepped frame ->
+--            frame.focus
+--isFinished : Slide -> Bool
+--isFinished slide =
+--    Debug.log "is-finished" <|
+--        case slide of
+--            Custom frame ->
+--                frame.focus == True
+--            Stepped frame ->
+--                case frame.steps of
+--                    Nothing ->
+--                        frame.focus == True
+--                    Just steps ->
+--                        List.reverse steps
+--                            |> List.head
+--                            |> Maybe.map stepIsFinished
+--                            |> Maybe.withDefault False
+--markAsFinished : Slide -> Slide
+--markAsFinished slide =
+--    case slide of
+--        Custom frame ->
+--            Custom { frame | focus = True }
+--        Stepped frame ->
+--            Stepped
+--                { frame
+--                    | focus = True
+--                    , steps = Maybe.map (List.map markAsFinishedStep) frame.steps
+--                }
+--markAsFinishedStep : Step -> Step
+--markAsFinishedStep step =
+--    case step of
+--        Code content ->
+--            Code { content | focus = True }
+--        BulletPoints bullets ->
+--            BulletPoints <|
+--                List.map (\bull -> { bull | focus = True }) bullets
+--stepHasFocus : Step -> Bool
+--stepHasFocus step =
+--    case step of
+--        Code content ->
+--            content.focus
+--        BulletPoints bullets ->
+--            List.any .focus bullets
+--stepIsFinished : Step -> Bool
+--stepIsFinished step =
+--    case step of
+--        Code content ->
+--            content.focus
+--        BulletPoints bullets ->
+--            List.reverse bullets
+--                |> List.head
+--                |> Maybe.map .focus
+--                |> Maybe.withDefault False
+--advanceStep step =
+--    case step of
+--        Code content ->
+--            Code { content | focus = not content.focus }
+--        BulletPoints bullets ->
+--            if List.any .focus <| List.drop (List.length bullets - 1) bullets then
+--                markAsFinishedStep step
+--            else if List.any .focus bullets then
+--                BulletPoints <|
+--                    fst <|
+--                        List.foldl
+--                            (\bull ( allBullets, previousFlagged ) ->
+--                                if previousFlagged then
+--                                    ( allBullets ++ [ { bull | focus = True } ], False )
+--                                else
+--                                    ( allBullets ++ [ bull ], bull.focus )
+--                            )
+--                            ( [], False )
+--                            bullets
+--            else
+--                case bullets of
+--                    [] ->
+--                        BulletPoints bullets
+--                    b :: bs ->
+--                        BulletPoints <| { b | focus = True } :: bs
+--advance : Slide -> Slide
+--advance slide =
+--    case slide of
+--        Custom frame ->
+--            Custom { frame | focus = True }
+--        Stepped frame ->
+--            case frame.steps of
+--                Nothing ->
+--                    Stepped { frame | focus = True }
+--                Just steps ->
+--                    if List.any stepHasFocus steps then
+--                        let
+--                            advancedSteps =
+--                                fst <|
+--                                    List.foldl
+--                                        (\step ( newSteps, focusPointPassed ) ->
+--                                            if focusPointPassed then
+--                                                ( newSteps ++ [ advanceStep step ], False )
+--                                            else if stepHasFocus step then
+--                                                if stepIsFinished step then
+--                                                    ( newSteps ++ [ markAsFinishedStep step ], True )
+--                                                else
+--                                                    ( newSteps ++ [ advanceStep step ], False )
+--                                            else
+--                                                ( newSteps ++ [ step ], False )
+--                                        )
+--                                        ( [], False )
+--                                        steps
+--                        in
+--                            Stepped
+--                                { frame
+--                                    | focus = True
+--                                    , steps = Just advancedSteps
+--                                }
+--                    else
+--                        case steps of
+--                            [] ->
+--                                Stepped
+--                                    { frame
+--                                        | focus = True
+--                                    }
+--                            s :: alls ->
+--                                Stepped
+--                                    { frame
+--                                        | focus = True
+--                                        , steps = Just (advanceStep s :: alls)
+--                                    }
+--animateSlide : Slide ->
+
+
+animateSlide slide animate =
+    case slide of
+        Custom content ->
+            Custom
+                { content | style = animate content.style }
+
+        Stepped content ->
+            Stepped
+                { content | style = animate content.style }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update message model =
     case message of
+        Key code ->
+            if code == 39 then
+                --right arrow
+                update Forward model
+            else if code == 40 then
+                --left arrow
+                update Back model
+            else
+                ( model, Cmd.none )
+
+        Forward ->
+            let
+                newIndex =
+                    Debug.log "new Index" <|
+                        if model.slideIndex < List.length model.slides - 1 then
+                            model.slideIndex + 1
+                        else
+                            0
+
+                newSlides =
+                    List.indexedMap
+                        (\i slide ->
+                            if i == newIndex then
+                                animateSlide slide <|
+                                    Animation.interrupt
+                                        [ Animation.set
+                                            [ Animation.display Animation.block
+                                            ]
+                                        , Animation.to
+                                            [ Animation.opacity 1
+                                            ]
+                                        ]
+                            else if i == newIndex - 1 then
+                                animateSlide slide <|
+                                    Animation.interrupt
+                                        [ Animation.set
+                                            [ Animation.opacity 0
+                                            , Animation.display Animation.none
+                                            ]
+                                        ]
+                            else
+                                slide
+                        )
+                        model.slides
+            in
+                ( { model
+                    | slideIndex = newIndex
+                    , slides = newSlides
+                  }
+                , Cmd.none
+                )
+
+        --let
+        --    newSlides =
+        --        List.reverse <|
+        --            fst <|
+        --                List.foldl
+        --                    (\slide ( allSlides, previousFrameFinished ) ->
+        --                        let
+        --                            ( newSlide, fin ) =
+        --                                if previousFrameFinished then
+        --                                    ( advance slide, False )
+        --                                else if isFocused slide then
+        --                                    if isFinished slide then
+        --                                        ( markAsFinished slide, True )
+        --                                    else
+        --                                        ( advance slide, False )
+        --                                else
+        --                                    ( slide, previousFrameFinished )
+        --                        in
+        --                            ( newSlide :: allSlides, fin )
+        --                    )
+        --                    ( [], False )
+        --                    model.slides
+        --    _ =
+        --        Debug.log "focus" <| toString <| List.map isFocused newSlides
+        --in
+        --    ( { model | slides = newSlides }
+        --    , Cmd.none
+        --    )
+        Back ->
+            ( model, Cmd.none )
+
         Animate animMsg ->
             let
                 annulus =
@@ -97,9 +327,28 @@ update message model =
 
                 track =
                     Animation.update animMsg model.track
+
+                slides =
+                    List.map
+                        (\slide ->
+                            case slide of
+                                Custom content ->
+                                    Custom
+                                        { content
+                                            | style = Animation.update animMsg content.style
+                                        }
+
+                                Stepped content ->
+                                    Stepped
+                                        { content
+                                            | style = Animation.update animMsg content.style
+                                        }
+                        )
+                        model.slides
             in
                 ( { model
                     | track = track
+                    , slides = slides
                     , gears =
                         { annulus = annulus
                         , sun = sun
@@ -144,10 +393,13 @@ viewSlide : Model -> Slide -> Html Msg
 viewSlide model slide =
     case slide of
         Custom { html, style, hiddenNote } ->
-            html model
+            div (Animation.render style)
+                [ html model
+                ]
 
-        Stepped { title, steps, hiddenNote } ->
-            div [ class "slide", Style.frame ]
+        Stepped { title, steps, hiddenNote, style } ->
+            div
+                (Style.frame :: Animation.render style)
                 [ h1 [] [ text title ]
                 , case steps of
                     Nothing ->
@@ -162,24 +414,35 @@ viewSlide model slide =
 viewStep : Step -> Html Msg
 viewStep step =
     case step of
-        Code { style, content, focus } ->
+        Code style content ->
             code (Animation.render style ++ [ Style.code ])
-                [ text content ]
+                [ text content
+                ]
 
-        BulletPoints points ->
+        BulletPoints style points ->
             let
-                renderPoints { style, content, focus } =
-                    li (Animation.render style) [ text content ]
+                renderPoints content =
+                    li (Animation.render style)
+                        [ text content
+                        ]
             in
-                ul []
+                ul (Animation.render style)
                     (List.map renderPoints points)
+
+
+someCode str =
+    someCode str
+
+
+bulletPoints points =
+    BulletPoints initialSubStyle points
 
 
 slides : List Slide
 slides =
     [ Custom
         { html = cornell
-        , style = initialStyle
+        , style = Animation.style [ Animation.opacity 1, Animation.display Animation.block ]
         , hiddenNote = ""
         }
     , Custom
@@ -190,22 +453,23 @@ slides =
     , Stepped
         { title = "How do we talk about animation?"
         , hiddenNote = "OK, so I got this thing.  I need it to make it:"
+        , style = initialStyle
         , steps =
             Just
-                [ BulletPoints
-                    [ makeContent "fade in"
-                    , makeContent "then tell me it's done"
-                    , makeContent "then begin rotating until further notice"
+                [ bulletPoints
+                    [ "fade in"
+                    , "then tell me it's done"
+                    , "then begin rotating until further notice"
                     ]
                 ]
         }
     , Stepped
         { title = "A list as our interface"
         , hiddenNote = "OK, so I got this thing.  I need it to make it:"
+        , style = initialStyle
         , steps =
             Just
-                [ Code <|
-                    makeContent """
+                [ someCode """
     [ Animation.to [ opacity 1 ]
     , Animation.send DoneFadingIn
     , Animation.loop
@@ -219,14 +483,14 @@ slides =
     , Stepped
         { title = "What if the animation is already doing something?"
         , hiddenNote = "OK, so I got this thing.  I need it to make it:"
+        , style = initialStyle
         , steps =
             Just
-                [ BulletPoints
-                    [ makeContent "Smoothly interrupt it"
-                    , makeContent "Queue up after it"
+                [ bulletPoints
+                    [ "Smoothly interrupt it"
+                    , "Queue up after it"
                     ]
-                , Code <|
-                    makeContent """
+                , someCode """
 Animation.interrupt -- or Animation.queue
     [ Animation.to [ opacity 1 ]
     , Animation.send DoneFadingIn
@@ -241,36 +505,38 @@ Animation.interrupt -- or Animation.queue
     , Stepped
         { title = "How do we get from A to B?"
         , hiddenNote = "OK, so I got this thing.  I need it to make it:"
+        , style = initialStyle
         , steps =
             Just
-                [ BulletPoints
-                    [ makeContent "Duration/Easing"
-                    , makeContent "Springs <- default in elm-style-animation"
-                    , makeContent "Use springs"
-                    , makeContent "You might want to use springs"
-                    , makeContent "Springs are probably what you want"
+                [ bulletPoints
+                    [ "Duration/Easing"
+                    , "Springs <- default in elm-style-animation"
+                    , "Use springs"
+                    , "You might want to use springs"
+                    , "Springs are probably what you want"
                     ]
                 ]
         }
     , Stepped
         { title = "Intuition for Springs"
         , hiddenNote = "You’re may be avoiding springs because no one gave you a good intuition about them.  And they’re hard to do in CSS Transitions.  You have two properties to specify to create a spring.  First, the stiffness, which says 'how fast does this move'?  Second, the damping which says 'how fast does this settle?'"
+        , style = initialStyle
         , steps =
             Just
-                [ BulletPoints
-                    [ makeContent "Stiffness - How fast does it move?"
-                    , makeContent "Damping - How fast does it settle?"
-                    , makeContent "Duration is a secondary property of the spring.  You don't specify it."
+                [ bulletPoints
+                    [ "Stiffness - How fast does it move?"
+                    , "Damping - How fast does it settle?"
+                    , "Duration is a secondary property of the spring.  You don't specify it."
                     ]
                 ]
         }
     , Stepped
         { title = "Animating Cool Stuff!"
         , hiddenNote = ""
+        , style = initialStyle
         , steps =
             Just
-                [ Code <|
-                    makeContent """
+                [ someCode """
 Animation.to
   [ Animation.blur (px 5)
   , Animation.greyscale (100)
@@ -282,10 +548,10 @@ Animation.to
     , Stepped
         { title = "Like CSS Filters!"
         , hiddenNote = ""
+        , style = initialStyle
         , steps =
             Just
-                [ Code <|
-                    makeContent """
+                [ someCode """
 Animation.to
   [ Animation.blur (px 5)
   , Animation.greyscale (100)
@@ -297,10 +563,10 @@ Animation.to
     , Stepped
         { title = "Polygon Morphing!"
         , hiddenNote = ""
+        , style = initialStyle
         , steps =
             Just
-                [ Code <|
-                    makeContent """
+                [ someCode """
 Animation.interrupt
     [ Animation.to [ opacity 1 ]
     , Animation.to [ opacity 1 ]
@@ -314,10 +580,10 @@ Animation.interrupt
     , Stepped
         { title = "And Shadows!"
         , hiddenNote = ""
+        , style = initialStyle
         , steps =
             Just
-                [ Code <|
-                    makeContent """
+                [ someCode """
 Animation.to
        [ Animation.shadow
                  { offsetX = 0
@@ -434,6 +700,7 @@ main =
                                 [ Animation.rotate (turn 0) ]
                         }
               , slides = slides
+              , slideIndex = 0
               }
             , Cmd.none
             )
@@ -442,11 +709,13 @@ main =
         , subscriptions =
             (\model ->
                 Sub.batch
-                    [ Animation.subscription model.gears.annulus Animate
-                    , Animation.subscription model.gears.sun Animate
-                    , Animation.subscription model.gears.smallPlanet Animate
-                    , Animation.subscription model.gears.largePlanet Animate
-                    , Animation.subscription model.gears.mediumPlanet Animate
+                    [ Animation.subscription Animate
+                        [ model.gears.annulus
+                        , model.gears.sun
+                        , model.gears.smallPlanet
+                        , model.gears.largePlanet
+                        , model.gears.mediumPlanet
+                        ]
                       --, if model.moving then
                       --    Mouse.moves Move
                       --  else
@@ -455,6 +724,7 @@ main =
                       --    Mouse.ups (\_ -> StopDragging)
                       --  else
                       --    Sub.none
+                    , Keyboard.downs Key
                     ]
             )
         }
