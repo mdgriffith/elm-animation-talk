@@ -13679,7 +13679,7 @@ var _user$project$Style$base = _elm_lang$core$Native_List.fromArray(
 		A2(_user$project$Style_ops['=>'], 'color', '#111'),
 		A2(_user$project$Style_ops['=>'], 'font-family', 'Open Sans')
 	]);
-var _user$project$Style$frame = _elm_lang$html$Html_Attributes$style(
+var _user$project$Style$container = _elm_lang$html$Html_Attributes$style(
 	A2(
 		_elm_lang$core$Basics_ops['++'],
 		_elm_lang$core$Native_List.fromArray(
@@ -13688,16 +13688,52 @@ var _user$project$Style$frame = _elm_lang$html$Html_Attributes$style(
 				A2(_user$project$Style_ops['=>'], 'flex', 'row'),
 				A2(_user$project$Style_ops['=>'], 'flex-direction', 'column'),
 				A2(_user$project$Style_ops['=>'], 'position', 'relative'),
-				A2(_user$project$Style_ops['=>'], 'margin', '90px'),
-				A2(_user$project$Style_ops['=>'], 'justify-content', 'center')
+				A2(_user$project$Style_ops['=>'], 'margin', '90px auto'),
+				A2(_user$project$Style_ops['=>'], 'justify-content', 'center'),
+				A2(_user$project$Style_ops['=>'], 'background-color', 'white'),
+				A2(_user$project$Style_ops['=>'], 'width', '800px')
+			]),
+		_user$project$Style$base));
+var _user$project$Style$cornell = _elm_lang$html$Html_Attributes$style(
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(_user$project$Style_ops['=>'], 'text-align', 'center')
+		]));
+var _user$project$Style$frame = _elm_lang$html$Html_Attributes$style(
+	A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(_user$project$Style_ops['=>'], 'display', 'flex'),
+				A2(_user$project$Style_ops['=>'], 'flex-direction', 'column'),
+				A2(_user$project$Style_ops['=>'], 'position', 'relative'),
+				A2(_user$project$Style_ops['=>'], 'margin', '90px 0'),
+				A2(_user$project$Style_ops['=>'], 'justify-content', 'center'),
+				A2(_user$project$Style_ops['=>'], 'background-color', 'white'),
+				A2(_user$project$Style_ops['=>'], 'width', '800px')
 			]),
 		_user$project$Style$base));
 var _user$project$Style$gears = _elm_lang$html$Html_Attributes$style(
 	_elm_lang$core$Native_List.fromArray(
 		[
-			A2(_user$project$Style_ops['=>'], 'fill', '#DDD'),
-			A2(_user$project$Style_ops['=>'], 'stroke', '#888'),
+			A2(_user$project$Style_ops['=>'], 'fill', '#c19849'),
+			A2(_user$project$Style_ops['=>'], 'stroke', 'white'),
 			A2(_user$project$Style_ops['=>'], 'stroke-width', '2px')
+		]));
+var _user$project$Style$gearsSvg = _elm_lang$html$Html_Attributes$style(
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(_user$project$Style_ops['=>'], 'flex-direction', 'row')
+		]));
+var _user$project$Style$body = _elm_lang$html$Html_Attributes$style(
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(_user$project$Style_ops['=>'], 'background-color', '#DDD')
+		]));
+var _user$project$Style$code = _elm_lang$html$Html_Attributes$style(
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(_user$project$Style_ops['=>'], 'white-space', 'pre')
 		]));
 var _user$project$Gears$factor = 0.3;
 var _user$project$Gears$beginInitialRotate = function (gears) {
@@ -13970,21 +14006,13 @@ var _user$project$Gears$viewPlanetary = function (gears) {
 					]))
 			]));
 };
-var _user$project$Main$viewIntro = function (model) {
+var _user$project$Main$talkIntro = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
-			[_user$project$Style$frame]),
+			[_user$project$Style$frame, _user$project$Style$gearsSvg]),
 		_elm_lang$core$Native_List.fromArray(
 			[
-				A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text('Animation in Elm')
-					])),
 				_user$project$Gears$viewPlanetary(model.gears),
 				A2(
 				_elm_lang$html$Html$div,
@@ -13992,7 +14020,15 @@ var _user$project$Main$viewIntro = function (model) {
 					[]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text('Using the '),
+						A2(
+						_elm_lang$html$Html$h1,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('animation in elm')
+							])),
+						_elm_lang$html$Html$text('using the '),
 						A2(
 						_elm_lang$html$Html$i,
 						_elm_lang$core$Native_List.fromArray(
@@ -14005,6 +14041,117 @@ var _user$project$Main$viewIntro = function (model) {
 					]))
 			]));
 };
+var _user$project$Main$thanks = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Style$frame]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$h1,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Thanks!')
+					])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Animation Library '),
+						A2(
+						_elm_lang$html$Html$br,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[])),
+						A2(
+						_elm_lang$html$Html$i,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('mdgriffith/elm-style-animation')
+							]))
+					]))
+			]));
+};
+var _user$project$Main$viewStep = function (step) {
+	var _p0 = step;
+	if (_p0.ctor === 'Code') {
+		return A2(
+			_elm_lang$html$Html$code,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_user$project$Animation$render(_p0._0.style),
+				_elm_lang$core$Native_List.fromArray(
+					[_user$project$Style$code])),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text(_p0._0.content)
+				]));
+	} else {
+		var renderPoints = function (_p1) {
+			var _p2 = _p1;
+			return A2(
+				_elm_lang$html$Html$li,
+				_user$project$Animation$render(_p2.style),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(_p2.content)
+					]));
+		};
+		return A2(
+			_elm_lang$html$Html$ul,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			A2(_elm_lang$core$List$map, renderPoints, _p0._0));
+	}
+};
+var _user$project$Main$viewSlide = F2(
+	function (model, slide) {
+		var _p3 = slide;
+		if (_p3.ctor === 'Custom') {
+			return _p3._0.html(model);
+		} else {
+			return A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('slide'),
+						_user$project$Style$frame
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$h1,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(_p3._0.title)
+							])),
+						function () {
+						var _p4 = _p3._0.steps;
+						if (_p4.ctor === 'Nothing') {
+							return _elm_lang$html$Html$text('');
+						} else {
+							return A2(
+								_elm_lang$html$Html$div,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('steps')
+									]),
+								A2(_elm_lang$core$List$map, _user$project$Main$viewStep, _p4._0));
+						}
+					}()
+					]));
+		}
+	});
 var _user$project$Main$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -14022,20 +14169,27 @@ var _user$project$Main$view = function (model) {
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[])),
-				_user$project$Main$viewIntro(model)
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[_user$project$Style$container]),
+				A2(
+					_elm_lang$core$List$map,
+					_user$project$Main$viewSlide(model),
+					model.slides))
 			]));
 };
 var _user$project$Main$update = F2(
 	function (message, model) {
-		var _p0 = message;
-		var _p1 = _p0._0;
-		var track = A2(_user$project$Animation$update, _p1, model.track);
-		var global = A2(_user$project$Animation$update, _p1, model.gears.global);
-		var largePlanet = A2(_user$project$Animation$update, _p1, model.gears.largePlanet);
-		var mediumPlanet = A2(_user$project$Animation$update, _p1, model.gears.mediumPlanet);
-		var smallPlanet = A2(_user$project$Animation$update, _p1, model.gears.smallPlanet);
-		var sun = A2(_user$project$Animation$update, _p1, model.gears.sun);
-		var annulus = A2(_user$project$Animation$update, _p1, model.gears.annulus);
+		var _p5 = message;
+		var _p6 = _p5._0;
+		var track = A2(_user$project$Animation$update, _p6, model.track);
+		var global = A2(_user$project$Animation$update, _p6, model.gears.global);
+		var largePlanet = A2(_user$project$Animation$update, _p6, model.gears.largePlanet);
+		var mediumPlanet = A2(_user$project$Animation$update, _p6, model.gears.mediumPlanet);
+		var smallPlanet = A2(_user$project$Animation$update, _p6, model.gears.smallPlanet);
+		var sun = A2(_user$project$Animation$update, _p6, model.gears.sun);
+		var annulus = A2(_user$project$Animation$update, _p6, model.gears.annulus);
 		return {
 			ctor: '_Tuple2',
 			_0: _elm_lang$core$Native_Utils.update(
@@ -14047,24 +14201,119 @@ var _user$project$Main$update = F2(
 			_1: _elm_lang$core$Platform_Cmd$none
 		};
 	});
+var _user$project$Main$initialStyle = _user$project$Animation$style(
+	_elm_lang$core$Native_List.fromArray(
+		[
+			_user$project$Animation$opacity(1)
+		]));
 var _user$project$Main$makeContent = function (txt) {
-	return {
-		style: _user$project$Animation$style(
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_user$project$Animation$opacity(0)
-				])),
-		content: txt,
-		focus: false
-	};
+	return {style: _user$project$Main$initialStyle, content: txt, focus: false};
+};
+var _user$project$Main_ops = _user$project$Main_ops || {};
+_user$project$Main_ops['=>'] = F2(
+	function (v0, v1) {
+		return {ctor: '_Tuple2', _0: v0, _1: v1};
+	});
+var _user$project$Main$cornell = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Style$frame, _user$project$Style$cornell]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Matthew Griffith')
+					])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$style(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(_user$project$Main_ops['=>'], 'display', 'flex'),
+								A2(_user$project$Main_ops['=>'], 'justify-content', 'center')
+							]))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$img,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$src('http://blog.cornelltech.io/content/images/2016/06/Mark-Solid-Foundry-F-Gradient.png'),
+										_elm_lang$html$Html_Attributes$style(
+										_elm_lang$core$Native_List.fromArray(
+											[
+												A2(_user$project$Main_ops['=>'], 'width', 'auto'),
+												A2(_user$project$Main_ops['=>'], 'height', '60px'),
+												A2(_user$project$Main_ops['=>'], 'padding', '20px')
+											]))
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[])),
+								A2(
+								_elm_lang$html$Html$br,
+								_elm_lang$core$Native_List.fromArray(
+									[]),
+								_elm_lang$core$Native_List.fromArray(
+									[])),
+								_elm_lang$html$Html$text('The Foundry')
+							])),
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$img,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$src('https://mdgriffith.github.io/cornelltech/CornellTechLogo.png'),
+										_elm_lang$html$Html_Attributes$style(
+										_elm_lang$core$Native_List.fromArray(
+											[
+												A2(_user$project$Main_ops['=>'], 'width', 'auto'),
+												A2(_user$project$Main_ops['=>'], 'height', '100px'),
+												A2(_user$project$Main_ops['=>'], 'padding', '0 45px')
+											]))
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[])),
+								A2(
+								_elm_lang$html$Html$br,
+								_elm_lang$core$Native_List.fromArray(
+									[]),
+								_elm_lang$core$Native_List.fromArray(
+									[])),
+								_elm_lang$html$Html$text('@ Cornell Tech')
+							]))
+					])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('We\'re hiring!')
+					]))
+			]));
 };
 var _user$project$Main$Model = F4(
 	function (a, b, c, d) {
 		return {moving: a, track: b, gears: c, slides: d};
-	});
-var _user$project$Main$Slide = F3(
-	function (a, b, c) {
-		return {title: a, steps: b, hiddenNote: c};
 	});
 var _user$project$Main$StepContent = F3(
 	function (a, b, c) {
@@ -14073,26 +14322,148 @@ var _user$project$Main$StepContent = F3(
 var _user$project$Main$Animate = function (a) {
 	return {ctor: 'Animate', _0: a};
 };
+var _user$project$Main$Custom = function (a) {
+	return {ctor: 'Custom', _0: a};
+};
+var _user$project$Main$Stepped = function (a) {
+	return {ctor: 'Stepped', _0: a};
+};
 var _user$project$Main$BulletPoints = function (a) {
 	return {ctor: 'BulletPoints', _0: a};
 };
+var _user$project$Main$Code = function (a) {
+	return {ctor: 'Code', _0: a};
+};
 var _user$project$Main$slides = _elm_lang$core$Native_List.fromArray(
 	[
+		_user$project$Main$Custom(
+		{html: _user$project$Main$cornell, style: _user$project$Main$initialStyle, hiddenNote: ''}),
+		_user$project$Main$Custom(
+		{html: _user$project$Main$talkIntro, style: _user$project$Main$initialStyle, hiddenNote: ''}),
+		_user$project$Main$Stepped(
 		{
-		title: 'How do we talk about animation?',
-		hiddenNote: 'OK, so I got this thing.  I need it to make it:',
-		steps: _elm_lang$core$Maybe$Just(
-			_elm_lang$core$Native_List.fromArray(
-				[
-					_user$project$Main$BulletPoints(
-					_elm_lang$core$Native_List.fromArray(
-						[
-							_user$project$Main$makeContent('fade in'),
-							_user$project$Main$makeContent('then tell me it\'s done'),
-							_user$project$Main$makeContent('then begin rotating until further notice')
-						]))
-				]))
-	}
+			title: 'How do we talk about animation?',
+			hiddenNote: 'OK, so I got this thing.  I need it to make it:',
+			steps: _elm_lang$core$Maybe$Just(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$Main$BulletPoints(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_user$project$Main$makeContent('fade in'),
+								_user$project$Main$makeContent('then tell me it\'s done'),
+								_user$project$Main$makeContent('then begin rotating until further notice')
+							]))
+					]))
+		}),
+		_user$project$Main$Stepped(
+		{
+			title: 'A list as our interface',
+			hiddenNote: 'OK, so I got this thing.  I need it to make it:',
+			steps: _elm_lang$core$Maybe$Just(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$Main$Code(
+						_user$project$Main$makeContent('\n    [ Animation.to [ opacity 1 ]\n    , Animation.send DoneFadingIn\n    , Animation.loop\n          [ Animation.to [ rotate (degrees 360) ]\n          , Animateion.set [ rotate (degrees 0) ]\n          ]\n    ]\n'))
+					]))
+		}),
+		_user$project$Main$Stepped(
+		{
+			title: 'What if the animation is already doing something?',
+			hiddenNote: 'OK, so I got this thing.  I need it to make it:',
+			steps: _elm_lang$core$Maybe$Just(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$Main$BulletPoints(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_user$project$Main$makeContent('Smoothly interrupt it'),
+								_user$project$Main$makeContent('Queue up after it')
+							])),
+						_user$project$Main$Code(
+						_user$project$Main$makeContent('\nAnimation.interrupt -- or Animation.queue\n    [ Animation.to [ opacity 1 ]\n    , Animation.send DoneFadingIn\n    , Animation.loop\n          [ Animation.to [ rotate (degrees 360) ]\n          , Animateion.set [ rotate (degrees 0) ]\n          ]\n    ]\n'))
+					]))
+		}),
+		_user$project$Main$Stepped(
+		{
+			title: 'How do we get from A to B?',
+			hiddenNote: 'OK, so I got this thing.  I need it to make it:',
+			steps: _elm_lang$core$Maybe$Just(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$Main$BulletPoints(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_user$project$Main$makeContent('Duration/Easing'),
+								_user$project$Main$makeContent('Springs <- default in elm-style-animation'),
+								_user$project$Main$makeContent('Use springs'),
+								_user$project$Main$makeContent('You might want to use springs'),
+								_user$project$Main$makeContent('Springs are probably what you want')
+							]))
+					]))
+		}),
+		_user$project$Main$Stepped(
+		{
+			title: 'Intuition for Springs',
+			hiddenNote: 'You’re may be avoiding springs because no one gave you a good intuition about them.  And they’re hard to do in CSS Transitions.  You have two properties to specify to create a spring.  First, the stiffness, which says \'how fast does this move\'?  Second, the damping which says \'how fast does this settle?\'',
+			steps: _elm_lang$core$Maybe$Just(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$Main$BulletPoints(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_user$project$Main$makeContent('Stiffness - How fast does it move?'),
+								_user$project$Main$makeContent('Damping - How fast does it settle?'),
+								_user$project$Main$makeContent('Duration is a secondary property of the spring.  You don\'t specify it.')
+							]))
+					]))
+		}),
+		_user$project$Main$Stepped(
+		{
+			title: 'Animating Cool Stuff!',
+			hiddenNote: '',
+			steps: _elm_lang$core$Maybe$Just(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$Main$Code(
+						_user$project$Main$makeContent('\nAnimation.to\n  [ Animation.blur (px 5)\n  , Animation.greyscale (100)\n  ]\n\n                    '))
+					]))
+		}),
+		_user$project$Main$Stepped(
+		{
+			title: 'Like CSS Filters!',
+			hiddenNote: '',
+			steps: _elm_lang$core$Maybe$Just(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$Main$Code(
+						_user$project$Main$makeContent('\nAnimation.to\n  [ Animation.blur (px 5)\n  , Animation.greyscale (100)\n  ]\n\n                    '))
+					]))
+		}),
+		_user$project$Main$Stepped(
+		{
+			title: 'Polygon Morphing!',
+			hiddenNote: '',
+			steps: _elm_lang$core$Maybe$Just(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$Main$Code(
+						_user$project$Main$makeContent('\nAnimation.interrupt\n    [ Animation.to [ opacity 1 ]\n    , Animation.to [ opacity 1 ]\n    , Animation.to [ opacity 1 ]\n    ]\n\n\n                    '))
+					]))
+		}),
+		_user$project$Main$Stepped(
+		{
+			title: 'And Shadows!',
+			hiddenNote: '',
+			steps: _elm_lang$core$Maybe$Just(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$Main$Code(
+						_user$project$Main$makeContent('\nAnimation.to\n       [ Animation.shadow\n                 { offsetX = 0\n                 , offsetY = 1\n                 , size = 0\n                 , blur = 2\n                 , color = black\n                 }\n      ]\n                    '))
+					]))
+		}),
+		_user$project$Main$Custom(
+		{html: _user$project$Main$thanks, style: _user$project$Main$initialStyle, hiddenNote: ''})
 	]);
 var _user$project$Main$main = {
 	main: _elm_lang$html$Html_App$program(
@@ -14166,9 +14537,6 @@ var _user$project$Main$main = {
 						]));
 			}
 		})
-};
-var _user$project$Main$Code = function (a) {
-	return {ctor: 'Code', _0: a};
 };
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
