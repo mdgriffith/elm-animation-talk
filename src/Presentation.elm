@@ -716,7 +716,7 @@ cornell model =
             ]
             [ div []
                 [ img
-                    [ src "http://blog.cornelltech.io/content/images/2016/06/Mark-Solid-Foundry-F-Gradient.png"
+                    [ src "img/foundry.png"
                     , style
                         [ "width" => "auto"
                         , "height" => "120px"
@@ -729,7 +729,7 @@ cornell model =
                 ]
             , div []
                 [ img
-                    [ src "https://mdgriffith.github.io/cornelltech/CornellTechLogo.png"
+                    [ src "img/T Solid.png"
                     , style
                         [ "width" => "auto"
                         , "height" => "190px"
@@ -750,7 +750,7 @@ cssFilters model =
     div [ Style.frame ]
         [ h1 [] [ text "Like CSS Filters!" ]
         , div [ Style.horizontal ]
-            [ img (Animation.render model.cssFilter ++ [ src "http://placekitten.com/300/300?image=10", onClick ActivateFilter ]) []
+            [ img (Animation.render model.cssFilter ++ [ src "img/cat.jpeg", onClick ActivateFilter ]) []
             , Html.code [ Style.code ] [ text """
 to
     [ greyscale 100 ]

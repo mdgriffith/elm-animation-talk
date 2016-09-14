@@ -16135,7 +16135,7 @@ var _user$project$Main$cornell = function (model) {
 								_elm_lang$html$Html$img,
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_elm_lang$html$Html_Attributes$src('http://blog.cornelltech.io/content/images/2016/06/Mark-Solid-Foundry-F-Gradient.png'),
+										_elm_lang$html$Html_Attributes$src('img/foundry.png'),
 										_elm_lang$html$Html_Attributes$style(
 										_elm_lang$core$Native_List.fromArray(
 											[
@@ -16164,7 +16164,7 @@ var _user$project$Main$cornell = function (model) {
 								_elm_lang$html$Html$img,
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_elm_lang$html$Html_Attributes$src('https://mdgriffith.github.io/cornelltech/CornellTechLogo.png'),
+										_elm_lang$html$Html_Attributes$src('img/T Solid.png'),
 										_elm_lang$html$Html_Attributes$style(
 										_elm_lang$core$Native_List.fromArray(
 											[
@@ -16404,7 +16404,7 @@ var _user$project$Main$cssFilters = function (model) {
 							_user$project$Animation$render(model.cssFilter),
 							_elm_lang$core$Native_List.fromArray(
 								[
-									_elm_lang$html$Html_Attributes$src('http://placekitten.com/300/300?image=10'),
+									_elm_lang$html$Html_Attributes$src('img/cat.jpeg'),
 									_elm_lang$html$Html_Events$onClick(_user$project$Main$ActivateFilter)
 								])),
 						_elm_lang$core$Native_List.fromArray(
@@ -17047,7 +17047,7 @@ var _user$project$Main$slides = _elm_lang$core$Native_List.fromArray(
 						_user$project$Main$bulletPoints(
 						_elm_lang$core$Native_List.fromArray(
 							['Smoothly interrupt it', 'Queue up after it'])),
-						_user$project$Main$someCode('\nAnimation.interrupt\n    [ ourListofInstructions\n    ]\n')
+						_user$project$Main$someCode('\nAnimation.interrupt\n    [ ourListofInstructions\n    ]\n\nAnimation.queue\n    [ ourListofInstructions\n    ]\n')
 					]))
 		}),
 		_user$project$Main$Stepped(
