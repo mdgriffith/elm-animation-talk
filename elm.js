@@ -15976,6 +15976,14 @@ var _user$project$Main$thanks = function (model) {
 								_elm_lang$core$Native_List.fromArray(
 									[
 										_elm_lang$html$Html$text('kitten image from placekitten.com ')
+									])),
+								A2(
+								_elm_lang$html$Html$li,
+								_elm_lang$core$Native_List.fromArray(
+									[]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('special thanks to the organizers of ElmConf!')
 									]))
 							]))
 					]))

@@ -624,6 +624,10 @@ slides =
 Animation.interrupt
     [ ourListofInstructions
     ]
+
+Animation.queue
+    [ ourListofInstructions
+    ]
 """
                 ]
         }
@@ -842,6 +846,7 @@ thanks model =
             [ ul []
                 [ li [] [ text "mdgriffith/elm-style-animation v3.0.0" ]
                 , li [] [ text "kitten image from placekitten.com " ]
+                , li [] [ text "special thanks to the organizers of ElmConf!" ]
                 ]
             ]
         ]
