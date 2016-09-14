@@ -28,6 +28,12 @@ type Msg
     | SwitchPolygon Int
     | ActivateFilter
     | MoveShadow
+    | MoveMouse Mouse.Position
+    | StartDragging
+    | StopDragging
+    | ToggleStagger
+    | StaggerLeft
+    | StaggerRight
 
 
 type alias Model =
@@ -48,6 +54,8 @@ type alias Model =
     , slides : List Slide
     , slideIndex : Int
     , slideSubIndex : Int
+    , staggers : List Animation.State
+    , staggerIsLeft : Bool
     }
 
 
@@ -142,6 +150,79 @@ update message model =
             else
                 ( model, Cmd.none )
 
+        MoveMouse { x, y } ->
+            let
+                newTrack =
+                    Animation.interrupt
+                        [ Animation.to
+                            [ Animation.left (px <| toFloat x)
+                            , Animation.top (px <| toFloat y)
+                            ]
+                        ]
+                        model.track
+            in
+                ( { model
+                    | track = newTrack
+                  }
+                , Cmd.none
+                )
+
+        StartDragging ->
+            ( { model | moving = True }, Cmd.none )
+
+        StopDragging ->
+            ( { model | moving = False }, Cmd.none )
+
+        ToggleStagger ->
+            if model.staggerIsLeft then
+                update StaggerRight model
+            else
+                update StaggerLeft model
+
+        StaggerLeft ->
+            let
+                newStaggers =
+                    List.indexedMap
+                        (\i style ->
+                            Animation.interrupt
+                                [ Animation.wait (toFloat i * 0.05 * second)
+                                , Animation.to
+                                    [ Animation.left (px 0)
+                                    ]
+                                ]
+                                style
+                        )
+                        model.staggers
+            in
+                ( { model
+                    | staggers = newStaggers
+                    , staggerIsLeft = True
+                  }
+                , Cmd.none
+                )
+
+        StaggerRight ->
+            let
+                newStaggers =
+                    List.indexedMap
+                        (\i style ->
+                            Animation.interrupt
+                                [ Animation.wait (toFloat i * 0.05 * second)
+                                , Animation.to
+                                    [ Animation.left (px 100)
+                                    ]
+                                ]
+                                style
+                        )
+                        model.staggers
+            in
+                ( { model
+                    | staggers = newStaggers
+                    , staggerIsLeft = False
+                  }
+                , Cmd.none
+                )
+
         Forward ->
             let
                 stepsInSlide =
@@ -158,11 +239,10 @@ update message model =
                                     model.slides
 
                 ( newSubIndex, switchSlides ) =
-                    Debug.log "switch" <|
-                        if model.slideSubIndex < stepsInSlide - 1 then
-                            ( model.slideSubIndex + 1, False )
-                        else
-                            ( 0, True )
+                    if model.slideSubIndex < stepsInSlide - 1 then
+                        ( model.slideSubIndex + 1, False )
+                    else
+                        ( 0, True )
 
                 newIndex =
                     if switchSlides then
@@ -383,6 +463,9 @@ update message model =
                         )
                         model.slides
 
+                staggers =
+                    List.map (Animation.update animMsg) model.staggers
+
                 polygon =
                     Animation.update animMsg model.polygon
 
@@ -398,6 +481,7 @@ update message model =
                     , polygon = polygon
                     , cssFilter = cssFilter
                     , shadow = shadow
+                    , staggers = staggers
                     , gears =
                         { annulus = annulus
                         , sun = sun
@@ -571,6 +655,22 @@ Animation.interrupt
                 ]
         }
     , Stepped
+        { title = "Avoiding Special Machinery"
+        , hiddenNote = "OK, so I got this thing.  I need it to make it:"
+        , style = initialStyle
+        , steps = Nothing
+        }
+    , Custom
+        { hiddenNote = "OK, so I got this thing.  I need it to make it:"
+        , style = initialStyle
+        , html = staggerMovement
+        }
+    , Custom
+        { hiddenNote = ""
+        , style = initialStyle
+        , html = mouseMovement
+        }
+    , Stepped
         { title = "Animating Cool Stuff!"
         , hiddenNote = ""
         , style = initialStyle
@@ -648,9 +748,8 @@ cssFilters model =
         , div [ Style.horizontal ]
             [ img (Animation.render model.cssFilter ++ [ src "http://placekitten.com/300/300?image=10", onClick ActivateFilter ]) []
             , Html.code [ Style.code ] [ text """
-Animation.to
-    [ Animation.greyscale (100)
-    ]
+to
+    [ greyscale 100 ]
 
                     """ ]
             ]
@@ -663,17 +762,55 @@ shadowMovement model =
         , div [ Style.horizontal ]
             [ div (Animation.render model.shadow ++ [ onMouseOver MoveShadow, Style.shadow ]) []
             , Html.code [ Style.code ] [ text """
-Animation.to
-   [ Animation.shadow
+to
+   [ shadow
          { offsetX = 0
          , offsetY = 1
          , size = 0
          , blur = 2
          , color = black
          }
-  ]
+  ]        """ ]
+            ]
+        ]
 
-                    """ ]
+
+staggerMovement model =
+    div [ Style.frame ]
+        [ h1 [] [ text "Stagger Movement" ]
+        , div [ Style.horizontal ]
+            [ div [ onClick ToggleStagger, Style.staggerBox ]
+                (List.map
+                    (\style ->
+                        div (Animation.render style ++ [ Style.staggerDot ]) []
+                    )
+                    model.staggers
+                )
+            , Html.code [ Style.code ] [ text """
+List.indexedMap
+    (\\i style ->
+        interrupt
+            [ wait (i * 0.1 * second)
+            , to [ left (px 1) ]
+            ] style
+    ) model.styles """ ]
+            ]
+        ]
+
+
+mouseMovement model =
+    div [ Style.frame ]
+        [ h1 [] [ text "Slight delay on following the mouse" ]
+        , div [ Style.horizontal ]
+            [ div ([ onMouseDown StartDragging, Style.draggableDot ] ++ Animation.render model.track) []
+            , Html.code [ Style.code ] [ text """
+Mouse {x,y} ->
+    interrupt
+        [ to
+            [ left (px x)
+            , top (px y)
+            ]
+        ] model """ ]
             ]
         ]
 
@@ -684,13 +821,13 @@ polygonTransitions model =
         , div [ Style.horizontal ]
             [ div [] [ Polygons.view model.polygon SwitchPolygon ]
             , Html.code [ Style.code ] [ text """
-Animation.to
-    [ Animation.points
+to
+    [ points
         [ ( 161.649, 170.517 )
         , ( 8.869, 323.298 )
         , ( 314.43, 323.298 )
         ]
-    , Animation.fill (Color.rgb 230 230 230)
+    , fill (Color.rgb 230 230 230)
     ]
 
                     """ ]
@@ -703,7 +840,7 @@ thanks model =
         [ h1 [] [ text "Thanks!" ]
         , div []
             [ ul []
-                [ li [] [ text "mdgriffith/elm-style-animation" ]
+                [ li [] [ text "mdgriffith/elm-style-animation v3.0.0" ]
                 , li [] [ text "kitten image from placekitten.com " ]
                 ]
             ]
@@ -717,7 +854,7 @@ talkIntro model =
             [ h1 [ Style.animHeader ] [ text "animation in elm" ]
             , text "using the "
             , i [] [ text "elm-style-animation" ]
-            , text " library"
+            , text " library v.3.0.0"
             ]
         ]
 
@@ -728,8 +865,8 @@ main =
             ( { moving = False
               , track =
                     Animation.style
-                        [ Animation.left (px 0)
-                        , Animation.top (px 0)
+                        [ Animation.left (px 500)
+                        , Animation.top (px 500)
                         ]
               , gears =
                     Gears.beginInitialRotate
@@ -752,6 +889,14 @@ main =
                             Animation.style
                                 [ Animation.rotate (turn 0) ]
                         }
+              , staggerIsLeft = True
+              , staggers =
+                    [ Animation.style [ Animation.left (px 0) ]
+                    , Animation.style [ Animation.left (px 0) ]
+                    , Animation.style [ Animation.left (px 0) ]
+                    , Animation.style [ Animation.left (px 0) ]
+                    , Animation.style [ Animation.left (px 0) ]
+                    ]
               , polygon =
                     Animation.style
                         [ Animation.points
@@ -799,14 +944,14 @@ main =
                         , model.gears.largePlanet
                         , model.gears.mediumPlanet
                         ]
-                      --, if model.moving then
-                      --    Mouse.moves Move
-                      --  else
-                      --    Sub.none
-                      --, if model.moving then
-                      --    Mouse.ups (\_ -> StopDragging)
-                      --  else
-                      --    Sub.none
+                    , if model.moving then
+                        Mouse.moves MoveMouse
+                      else
+                        Sub.none
+                    , if model.moving then
+                        Mouse.ups (\_ -> StopDragging)
+                      else
+                        Sub.none
                     , Keyboard.downs Key
                     ]
             )

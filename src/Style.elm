@@ -77,6 +77,42 @@ body =
         ]
 
 
+draggableDot =
+    Html.Attributes.style <|
+        [ "border-radius" => "20px"
+        , "width" => "40px"
+        , "height" => "40px"
+        , "background-color" => "white"
+        , "position" => "fixed"
+        , "left" => "100px"
+        , "top" => "300px"
+        , "z-index" => "500"
+        ]
+
+
+staggerBox =
+    Html.Attributes.style <|
+        [ "display" => "flex"
+        , "flex-direction" => "column"
+        , "justify-content" => "center"
+        , "background-color" => "rgba(0,0,0,0.1)"
+        , "width" => "160px"
+        , "border-radius" => "5px"
+        , "padding" => "10px"
+        ]
+
+
+staggerDot =
+    Html.Attributes.style <|
+        [ "border-radius" => "20px"
+        , "width" => "40px"
+        , "height" => "40px"
+        , "background-color" => "white"
+        , "position" => "relative"
+        , "margin" => "10px"
+        ]
+
+
 code =
     Html.Attributes.style <|
         [ "white-space" => "pre"

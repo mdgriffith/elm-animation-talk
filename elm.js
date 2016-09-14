@@ -15098,6 +15098,39 @@ var _user$project$Style$body = _elm_lang$html$Html_Attributes$style(
 		[
 			A2(_user$project$Style_ops['=>'], 'background-color', '#DDD')
 		]));
+var _user$project$Style$draggableDot = _elm_lang$html$Html_Attributes$style(
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(_user$project$Style_ops['=>'], 'border-radius', '20px'),
+			A2(_user$project$Style_ops['=>'], 'width', '40px'),
+			A2(_user$project$Style_ops['=>'], 'height', '40px'),
+			A2(_user$project$Style_ops['=>'], 'background-color', 'white'),
+			A2(_user$project$Style_ops['=>'], 'position', 'fixed'),
+			A2(_user$project$Style_ops['=>'], 'left', '100px'),
+			A2(_user$project$Style_ops['=>'], 'top', '300px'),
+			A2(_user$project$Style_ops['=>'], 'z-index', '500')
+		]));
+var _user$project$Style$staggerBox = _elm_lang$html$Html_Attributes$style(
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(_user$project$Style_ops['=>'], 'display', 'flex'),
+			A2(_user$project$Style_ops['=>'], 'flex-direction', 'column'),
+			A2(_user$project$Style_ops['=>'], 'justify-content', 'center'),
+			A2(_user$project$Style_ops['=>'], 'background-color', 'rgba(0,0,0,0.1)'),
+			A2(_user$project$Style_ops['=>'], 'width', '160px'),
+			A2(_user$project$Style_ops['=>'], 'border-radius', '5px'),
+			A2(_user$project$Style_ops['=>'], 'padding', '10px')
+		]));
+var _user$project$Style$staggerDot = _elm_lang$html$Html_Attributes$style(
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(_user$project$Style_ops['=>'], 'border-radius', '20px'),
+			A2(_user$project$Style_ops['=>'], 'width', '40px'),
+			A2(_user$project$Style_ops['=>'], 'height', '40px'),
+			A2(_user$project$Style_ops['=>'], 'background-color', 'white'),
+			A2(_user$project$Style_ops['=>'], 'position', 'relative'),
+			A2(_user$project$Style_ops['=>'], 'margin', '10px')
+		]));
 var _user$project$Style$code = _elm_lang$html$Html_Attributes$style(
 	_elm_lang$core$Native_List.fromArray(
 		[
@@ -15897,7 +15930,7 @@ var _user$project$Main$talkIntro = function (model) {
 							[
 								_elm_lang$html$Html$text('elm-style-animation')
 							])),
-						_elm_lang$html$Html$text(' library')
+						_elm_lang$html$Html$text(' library v.3.0.0')
 					]))
 			]));
 };
@@ -15934,7 +15967,7 @@ var _user$project$Main$thanks = function (model) {
 									[]),
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_elm_lang$html$Html$text('mdgriffith/elm-style-animation')
+										_elm_lang$html$Html$text('mdgriffith/elm-style-animation v3.0.0')
 									])),
 								A2(
 								_elm_lang$html$Html$li,
@@ -16169,7 +16202,11 @@ var _user$project$Main$Model = function (a) {
 							return function (h) {
 								return function (i) {
 									return function (j) {
-										return {moving: a, track: b, gears: c, cssFilter: d, shadow: e, polygon: f, polygonIndex: g, slides: h, slideIndex: i, slideSubIndex: j};
+										return function (k) {
+											return function (l) {
+												return {moving: a, track: b, gears: c, cssFilter: d, shadow: e, polygon: f, polygonIndex: g, slides: h, slideIndex: i, slideSubIndex: j, staggers: k, staggerIsLeft: l};
+											};
+										};
 									};
 								};
 							};
@@ -16179,6 +16216,111 @@ var _user$project$Main$Model = function (a) {
 			};
 		};
 	};
+};
+var _user$project$Main$StaggerRight = {ctor: 'StaggerRight'};
+var _user$project$Main$StaggerLeft = {ctor: 'StaggerLeft'};
+var _user$project$Main$ToggleStagger = {ctor: 'ToggleStagger'};
+var _user$project$Main$staggerMovement = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Style$frame]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$h1,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Stagger Movement')
+					])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[_user$project$Style$horizontal]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Events$onClick(_user$project$Main$ToggleStagger),
+								_user$project$Style$staggerBox
+							]),
+						A2(
+							_elm_lang$core$List$map,
+							function (style) {
+								return A2(
+									_elm_lang$html$Html$div,
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_user$project$Animation$render(style),
+										_elm_lang$core$Native_List.fromArray(
+											[_user$project$Style$staggerDot])),
+									_elm_lang$core$Native_List.fromArray(
+										[]));
+							},
+							model.staggers)),
+						A2(
+						_elm_lang$html$Html$code,
+						_elm_lang$core$Native_List.fromArray(
+							[_user$project$Style$code]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('\nList.indexedMap\n    (\\i style ->\n        interrupt\n            [ wait (i * 0.1 * second)\n            , to [ left (px 1) ]\n            ] style\n    ) model.styles ')
+							]))
+					]))
+			]));
+};
+var _user$project$Main$StopDragging = {ctor: 'StopDragging'};
+var _user$project$Main$StartDragging = {ctor: 'StartDragging'};
+var _user$project$Main$mouseMovement = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Style$frame]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$h1,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Slight delay on following the mouse')
+					])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[_user$project$Style$horizontal]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Events$onMouseDown(_user$project$Main$StartDragging),
+									_user$project$Style$draggableDot
+								]),
+							_user$project$Animation$render(model.track)),
+						_elm_lang$core$Native_List.fromArray(
+							[])),
+						A2(
+						_elm_lang$html$Html$code,
+						_elm_lang$core$Native_List.fromArray(
+							[_user$project$Style$code]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('\nMouse {x,y} ->\n    interrupt\n        [ to\n            [ left (px x)\n            , top (px y)\n            ]\n        ] model ')
+							]))
+					]))
+			]));
+};
+var _user$project$Main$MoveMouse = function (a) {
+	return {ctor: 'MoveMouse', _0: a};
 };
 var _user$project$Main$MoveShadow = {ctor: 'MoveShadow'};
 var _user$project$Main$shadowMovement = function (model) {
@@ -16220,7 +16362,7 @@ var _user$project$Main$shadowMovement = function (model) {
 							[_user$project$Style$code]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html$text('\nAnimation.to\n   [ Animation.shadow\n         { offsetX = 0\n         , offsetY = 1\n         , size = 0\n         , blur = 2\n         , color = black\n         }\n  ]\n\n                    ')
+								_elm_lang$html$Html$text('\nto\n   [ shadow\n         { offsetX = 0\n         , offsetY = 1\n         , size = 0\n         , blur = 2\n         , color = black\n         }\n  ]        ')
 							]))
 					]))
 			]));
@@ -16265,7 +16407,7 @@ var _user$project$Main$cssFilters = function (model) {
 							[_user$project$Style$code]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html$text('\nAnimation.to\n    [ Animation.greyscale (100)\n    ]\n\n                    ')
+								_elm_lang$html$Html$text('\nto\n    [ greyscale 100 ]\n\n                    ')
 							]))
 					]))
 			]));
@@ -16308,7 +16450,7 @@ var _user$project$Main$polygonTransitions = function (model) {
 							[_user$project$Style$code]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html$text('\nAnimation.to\n    [ Animation.points\n        [ ( 161.649, 170.517 )\n        , ( 8.869, 323.298 )\n        , ( 314.43, 323.298 )\n        ]\n    , Animation.fill (Color.rgb 230 230 230)\n    ]\n\n                    ')
+								_elm_lang$html$Html$text('\nto\n    [ points\n        [ ( 161.649, 170.517 )\n        , ( 8.869, 323.298 )\n        , ( 314.43, 323.298 )\n        ]\n    , fill (Color.rgb 230 230 230)\n    ]\n\n                    ')
 							]))
 					]))
 			]));
@@ -16435,6 +16577,116 @@ var _user$project$Main$update = F2(
 							return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 						}
 					}
+				case 'MoveMouse':
+					var newTrack = A2(
+						_user$project$Animation$interrupt,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_user$project$Animation$to(
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_user$project$Animation$left(
+										_user$project$Animation$px(
+											_elm_lang$core$Basics$toFloat(_p16._0.x))),
+										_user$project$Animation$top(
+										_user$project$Animation$px(
+											_elm_lang$core$Basics$toFloat(_p16._0.y)))
+									]))
+							]),
+						model.track);
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{track: newTrack}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				case 'StartDragging':
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{moving: true}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				case 'StopDragging':
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{moving: false}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				case 'ToggleStagger':
+					if (model.staggerIsLeft) {
+						var _v15 = _user$project$Main$StaggerRight,
+							_v16 = model;
+						message = _v15;
+						model = _v16;
+						continue update;
+					} else {
+						var _v17 = _user$project$Main$StaggerLeft,
+							_v18 = model;
+						message = _v17;
+						model = _v18;
+						continue update;
+					}
+				case 'StaggerLeft':
+					var newStaggers = A2(
+						_elm_lang$core$List$indexedMap,
+						F2(
+							function (i, style) {
+								return A2(
+									_user$project$Animation$interrupt,
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_user$project$Animation$wait(
+											(_elm_lang$core$Basics$toFloat(i) * 5.0e-2) * _elm_lang$core$Time$second),
+											_user$project$Animation$to(
+											_elm_lang$core$Native_List.fromArray(
+												[
+													_user$project$Animation$left(
+													_user$project$Animation$px(0))
+												]))
+										]),
+									style);
+							}),
+						model.staggers);
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{staggers: newStaggers, staggerIsLeft: true}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				case 'StaggerRight':
+					var newStaggers = A2(
+						_elm_lang$core$List$indexedMap,
+						F2(
+							function (i, style) {
+								return A2(
+									_user$project$Animation$interrupt,
+									_elm_lang$core$Native_List.fromArray(
+										[
+											_user$project$Animation$wait(
+											(_elm_lang$core$Basics$toFloat(i) * 5.0e-2) * _elm_lang$core$Time$second),
+											_user$project$Animation$to(
+											_elm_lang$core$Native_List.fromArray(
+												[
+													_user$project$Animation$left(
+													_user$project$Animation$px(100))
+												]))
+										]),
+									style);
+							}),
+						model.staggers);
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{staggers: newStaggers, staggerIsLeft: false}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
 				case 'Forward':
 					var stepsInSlide = A2(
 						_elm_lang$core$Maybe$withDefault,
@@ -16451,10 +16703,7 @@ var _user$project$Main$update = F2(
 												_user$project$Main$slideStepCount(slide)) : _elm_lang$core$Maybe$Nothing;
 										}),
 									model.slides))));
-					var _p18 = A2(
-						_elm_lang$core$Debug$log,
-						'switch',
-						(_elm_lang$core$Native_Utils.cmp(model.slideSubIndex, stepsInSlide - 1) < 0) ? {ctor: '_Tuple2', _0: model.slideSubIndex + 1, _1: false} : {ctor: '_Tuple2', _0: 0, _1: true});
+					var _p18 = (_elm_lang$core$Native_Utils.cmp(model.slideSubIndex, stepsInSlide - 1) < 0) ? {ctor: '_Tuple2', _0: model.slideSubIndex + 1, _1: false} : {ctor: '_Tuple2', _0: 0, _1: true};
 					var newSubIndex = _p18._0;
 					var switchSlides = _p18._1;
 					var newIndex = switchSlides ? ((_elm_lang$core$Native_Utils.cmp(
@@ -16659,6 +16908,10 @@ var _user$project$Main$update = F2(
 					var shadow = A2(_user$project$Animation$update, _p25, model.shadow);
 					var cssFilter = A2(_user$project$Animation$update, _p25, model.cssFilter);
 					var polygon = A2(_user$project$Animation$update, _p25, model.polygon);
+					var staggers = A2(
+						_elm_lang$core$List$map,
+						_user$project$Animation$update(_p25),
+						model.staggers);
 					var slides = A2(
 						_elm_lang$core$List$map,
 						function (slide) {
@@ -16725,6 +16978,7 @@ var _user$project$Main$update = F2(
 								polygon: polygon,
 								cssFilter: cssFilter,
 								shadow: shadow,
+								staggers: staggers,
 								gears: {annulus: annulus, sun: sun, smallPlanet: smallPlanet, mediumPlanet: mediumPlanet, largePlanet: largePlanet, global: global}
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
@@ -16818,6 +17072,12 @@ var _user$project$Main$slides = _elm_lang$core$Native_List.fromArray(
 					]))
 		}),
 		_user$project$Main$Stepped(
+		{title: 'Avoiding Special Machinery', hiddenNote: 'OK, so I got this thing.  I need it to make it:', style: _user$project$Main$initialStyle, steps: _elm_lang$core$Maybe$Nothing}),
+		_user$project$Main$Custom(
+		{hiddenNote: 'OK, so I got this thing.  I need it to make it:', style: _user$project$Main$initialStyle, html: _user$project$Main$staggerMovement}),
+		_user$project$Main$Custom(
+		{hiddenNote: '', style: _user$project$Main$initialStyle, html: _user$project$Main$mouseMovement}),
+		_user$project$Main$Stepped(
 		{title: 'Animating Cool Stuff!', hiddenNote: '', style: _user$project$Main$initialStyle, steps: _elm_lang$core$Maybe$Nothing}),
 		_user$project$Main$Custom(
 		{hiddenNote: '', style: _user$project$Main$initialStyle, html: _user$project$Main$cssFilters}),
@@ -16868,9 +17128,9 @@ var _user$project$Main$main = {
 						_elm_lang$core$Native_List.fromArray(
 							[
 								_user$project$Animation$left(
-								_user$project$Animation$px(0)),
+								_user$project$Animation$px(500)),
 								_user$project$Animation$top(
-								_user$project$Animation$px(0))
+								_user$project$Animation$px(500))
 							])),
 					gears: _user$project$Gears$beginInitialRotate(
 						{
@@ -16911,6 +17171,40 @@ var _user$project$Main$main = {
 										_user$project$Animation$turn(0))
 									]))
 						}),
+					staggerIsLeft: true,
+					staggers: _elm_lang$core$Native_List.fromArray(
+						[
+							_user$project$Animation$style(
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_user$project$Animation$left(
+									_user$project$Animation$px(0))
+								])),
+							_user$project$Animation$style(
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_user$project$Animation$left(
+									_user$project$Animation$px(0))
+								])),
+							_user$project$Animation$style(
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_user$project$Animation$left(
+									_user$project$Animation$px(0))
+								])),
+							_user$project$Animation$style(
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_user$project$Animation$left(
+									_user$project$Animation$px(0))
+								])),
+							_user$project$Animation$style(
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_user$project$Animation$left(
+									_user$project$Animation$px(0))
+								]))
+						]),
 					polygon: _user$project$Animation$style(
 						_elm_lang$core$Native_List.fromArray(
 							[
@@ -16969,6 +17263,11 @@ var _user$project$Main$main = {
 							_user$project$Main$Animate,
 							_elm_lang$core$Native_List.fromArray(
 								[model.gears.annulus, model.gears.sun, model.gears.smallPlanet, model.gears.largePlanet, model.gears.mediumPlanet])),
+							model.moving ? _elm_lang$mouse$Mouse$moves(_user$project$Main$MoveMouse) : _elm_lang$core$Platform_Sub$none,
+							model.moving ? _elm_lang$mouse$Mouse$ups(
+							function (_p26) {
+								return _user$project$Main$StopDragging;
+							}) : _elm_lang$core$Platform_Sub$none,
 							_elm_lang$keyboard$Keyboard$downs(_user$project$Main$Key)
 						]));
 			}
