@@ -15070,6 +15070,7 @@ var _user$project$Style$frame = _elm_lang$html$Html_Attributes$style(
 				A2(_user$project$Style_ops['=>'], 'position', 'relative'),
 				A2(_user$project$Style_ops['=>'], 'margin', '90px 0'),
 				A2(_user$project$Style_ops['=>'], 'justify-content', 'center'),
+				A2(_user$project$Style_ops['=>'], 'min-height', '400px'),
 				A2(_user$project$Style_ops['=>'], 'width', '800px')
 			]),
 		_user$project$Style$base));
@@ -15668,6 +15669,203 @@ var _user$project$Polygons$polygons = _elm_lang$core$Native_List.fromArray(
 		])
 	]);
 
+var _user$project$Main$cornerStone = F2(
+	function (cls, coloring) {
+		var grey = 'rgba(0,0,0,0.1)';
+		var green = '#7FD13B';
+		var purple = '#5A6378';
+		var gold = '#F0AD00';
+		var blue = '#60B5CC';
+		var _p0 = function () {
+			var _p1 = coloring;
+			switch (_p1.ctor) {
+				case 'AllColors':
+					return {ctor: '_Tuple4', _0: blue, _1: gold, _2: purple, _3: green};
+				case 'Green':
+					return {ctor: '_Tuple4', _0: green, _1: green, _2: green, _3: green};
+				case 'Gold':
+					return {ctor: '_Tuple4', _0: gold, _1: gold, _2: gold, _3: gold};
+				case 'Purple':
+					return {ctor: '_Tuple4', _0: purple, _1: purple, _2: purple, _3: purple};
+				case 'Blue':
+					return {ctor: '_Tuple4', _0: blue, _1: blue, _2: blue, _3: blue};
+				default:
+					return {ctor: '_Tuple4', _0: grey, _1: grey, _2: grey, _3: grey};
+			}
+		}();
+		var color1 = _p0._0;
+		var color2 = _p0._1;
+		var color3 = _p0._2;
+		var color4 = _p0._3;
+		return A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class(cls)
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$svg$Svg$svg,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$svg$Svg_Attributes$version('1.1'),
+							_elm_lang$svg$Svg_Attributes$x('0px'),
+							_elm_lang$svg$Svg_Attributes$y('0px'),
+							_elm_lang$svg$Svg_Attributes$viewBox('0 0 323.1 323')
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							A2(
+							_elm_lang$svg$Svg$rect,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$svg$Svg_Attributes$x('65.6'),
+									_elm_lang$svg$Svg_Attributes$y('66.5'),
+									_elm_lang$svg$Svg_Attributes$transform('matrix(2.256997e-03 -1 1 2.256997e-03 -1.082 158.3655)'),
+									_elm_lang$html$Html_Attributes$style(
+									_elm_lang$core$Native_List.fromArray(
+										[
+											{ctor: '_Tuple2', _0: 'fill', _1: color1}
+										])),
+									_elm_lang$svg$Svg_Attributes$width('26.5'),
+									_elm_lang$svg$Svg_Attributes$height('26.4')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[])),
+							A2(
+							_elm_lang$svg$Svg$polygon,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$style(
+									_elm_lang$core$Native_List.fromArray(
+										[
+											{ctor: '_Tuple2', _0: 'fill', _1: color1}
+										])),
+									_elm_lang$svg$Svg_Attributes$points('62.2,62.4 0,0 0,124.5 ')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[])),
+							A2(
+							_elm_lang$svg$Svg$polygon,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$style(
+									_elm_lang$core$Native_List.fromArray(
+										[
+											{ctor: '_Tuple2', _0: 'fill', _1: color2}
+										])),
+									_elm_lang$svg$Svg_Attributes$points('3.2,126.2 20.2,159.6 20.2,109.2 ')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[])),
+							A2(
+							_elm_lang$svg$Svg$polygon,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$style(
+									_elm_lang$core$Native_List.fromArray(
+										[
+											{ctor: '_Tuple2', _0: 'fill', _1: color1}
+										])),
+									_elm_lang$svg$Svg_Attributes$points('161,0 131,30 299.7,0 ')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[])),
+							A2(
+							_elm_lang$svg$Svg$polygon,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$style(
+									_elm_lang$core$Native_List.fromArray(
+										[
+											{ctor: '_Tuple2', _0: 'fill', _1: color3}
+										])),
+									_elm_lang$svg$Svg_Attributes$points('20.2,169.2 0,129.3 0,293 ')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[])),
+							A2(
+							_elm_lang$svg$Svg$polygon,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$style(
+									_elm_lang$core$Native_List.fromArray(
+										[
+											{ctor: '_Tuple2', _0: 'fill', _1: color4}
+										])),
+									_elm_lang$svg$Svg_Attributes$points('53.3,96.4 32.9,96.4 23.6,105.8 23.6,130.7 ')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[])),
+							A2(
+							_elm_lang$svg$Svg$polygon,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$style(
+									_elm_lang$core$Native_List.fromArray(
+										[
+											{ctor: '_Tuple2', _0: 'fill', _1: color4}
+										])),
+									_elm_lang$svg$Svg_Attributes$points('126,30 156,0 69.4,0 39.4,30 ')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[])),
+							A2(
+							_elm_lang$svg$Svg$polygon,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$style(
+									_elm_lang$core$Native_List.fromArray(
+										[
+											{ctor: '_Tuple2', _0: 'fill', _1: color2}
+										])),
+									_elm_lang$svg$Svg_Attributes$points('34.6,30 64.6,0 4.6,0 ')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[])),
+							A2(
+							_elm_lang$svg$Svg$polygon,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$style(
+									_elm_lang$core$Native_List.fromArray(
+										[
+											{ctor: '_Tuple2', _0: 'fill', _1: color3}
+										])),
+									_elm_lang$svg$Svg_Attributes$points('122.6,33.4 38,33.4 64.6,60 ')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[])),
+							A2(
+							_elm_lang$svg$Svg$polygon,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$style(
+									_elm_lang$core$Native_List.fromArray(
+										[
+											{ctor: '_Tuple2', _0: 'fill', _1: color4}
+										])),
+									_elm_lang$svg$Svg_Attributes$points('92.1,63.6 92,51.5 64.8,63.6 ')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[])),
+							A2(
+							_elm_lang$svg$Svg$polygon,
+							_elm_lang$core$Native_List.fromArray(
+								[
+									_elm_lang$html$Html_Attributes$style(
+									_elm_lang$core$Native_List.fromArray(
+										[
+											{ctor: '_Tuple2', _0: 'fill', _1: color2}
+										])),
+									_elm_lang$svg$Svg_Attributes$points('62.2,93 62.2,67.3 36.3,93 ')
+								]),
+							_elm_lang$core$Native_List.fromArray(
+								[]))
+						]))
+				]));
+	});
 var _user$project$Main$talkIntro = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -15724,20 +15922,28 @@ var _user$project$Main$thanks = function (model) {
 					[]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text('Animation Library '),
 						A2(
-						_elm_lang$html$Html$br,
-						_elm_lang$core$Native_List.fromArray(
-							[]),
-						_elm_lang$core$Native_List.fromArray(
-							[])),
-						A2(
-						_elm_lang$html$Html$i,
+						_elm_lang$html$Html$ul,
 						_elm_lang$core$Native_List.fromArray(
 							[]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html$text('mdgriffith/elm-style-animation')
+								A2(
+								_elm_lang$html$Html$li,
+								_elm_lang$core$Native_List.fromArray(
+									[]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('mdgriffith/elm-style-animation')
+									])),
+								A2(
+								_elm_lang$html$Html$li,
+								_elm_lang$core$Native_List.fromArray(
+									[]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('kitten image from placekitten.com ')
+									]))
 							]))
 					]))
 			]));
@@ -15754,13 +15960,13 @@ var _user$project$Main$initialSubStyle = _user$project$Animation$style(
 			_user$project$Animation$opacity(0)
 		]));
 var _user$project$Main$viewStep = function (step) {
-	var _p0 = step;
-	if (_p0.ctor === 'Code') {
+	var _p2 = step;
+	if (_p2.ctor === 'Code') {
 		return A2(
 			_elm_lang$html$Html$code,
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				_user$project$Animation$render(_p0._0),
+				_user$project$Animation$render(_p2._0),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$Style$code,
@@ -15768,14 +15974,14 @@ var _user$project$Main$viewStep = function (step) {
 					])),
 			_elm_lang$core$Native_List.fromArray(
 				[
-					_elm_lang$html$Html$text(_p0._1)
+					_elm_lang$html$Html$text(_p2._1)
 				]));
 	} else {
-		var _p1 = _p0._0;
+		var _p3 = _p2._0;
 		var renderPoints = function (content) {
 			return A2(
 				_elm_lang$html$Html$li,
-				_user$project$Animation$render(_p1),
+				_user$project$Animation$render(_p3),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_lang$html$Html$text(content)
@@ -15783,20 +15989,20 @@ var _user$project$Main$viewStep = function (step) {
 		};
 		return A2(
 			_elm_lang$html$Html$ul,
-			_user$project$Animation$render(_p1),
-			A2(_elm_lang$core$List$map, renderPoints, _p0._1));
+			_user$project$Animation$render(_p3),
+			A2(_elm_lang$core$List$map, renderPoints, _p2._1));
 	}
 };
 var _user$project$Main$viewSlide = F2(
 	function (model, slide) {
-		var _p2 = slide;
-		if (_p2.ctor === 'Custom') {
+		var _p4 = slide;
+		if (_p4.ctor === 'Custom') {
 			return A2(
 				_elm_lang$html$Html$div,
-				_user$project$Animation$render(_p2._0.style),
+				_user$project$Animation$render(_p4._0.style),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_p2._0.html(model)
+						_p4._0.html(model)
 					]));
 		} else {
 			return A2(
@@ -15804,7 +16010,7 @@ var _user$project$Main$viewSlide = F2(
 				A2(
 					_elm_lang$core$List_ops['::'],
 					_user$project$Style$frame,
-					_user$project$Animation$render(_p2._0.style)),
+					_user$project$Animation$render(_p4._0.style)),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						A2(
@@ -15813,11 +16019,11 @@ var _user$project$Main$viewSlide = F2(
 							[]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html$text(_p2._0.title)
+								_elm_lang$html$Html$text(_p4._0.title)
 							])),
 						function () {
-						var _p3 = _p2._0.steps;
-						if (_p3.ctor === 'Nothing') {
+						var _p5 = _p4._0.steps;
+						if (_p5.ctor === 'Nothing') {
 							return _elm_lang$html$Html$text('');
 						} else {
 							return A2(
@@ -15826,49 +16032,22 @@ var _user$project$Main$viewSlide = F2(
 									[
 										_elm_lang$html$Html_Attributes$class('steps')
 									]),
-								A2(_elm_lang$core$List$map, _user$project$Main$viewStep, _p3._0));
+								A2(_elm_lang$core$List$map, _user$project$Main$viewStep, _p5._0));
 						}
 					}()
 					]));
 		}
 	});
-var _user$project$Main$view = function (model) {
-	return A2(
-		_elm_lang$html$Html$div,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A3(
-				_elm_lang$html$Html$node,
-				'link',
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$href('https://fonts.googleapis.com/css?family=Open+Sans'),
-						_elm_lang$html$Html_Attributes$rel('stylesheet')
-					]),
-				_elm_lang$core$Native_List.fromArray(
-					[])),
-				A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[_user$project$Style$container]),
-				A2(
-					_elm_lang$core$List$map,
-					_user$project$Main$viewSlide(model),
-					model.slides))
-			]));
-};
 var _user$project$Main$slideStepCount = function (slide) {
-	var _p4 = slide;
-	if (_p4.ctor === 'Custom') {
+	var _p6 = slide;
+	if (_p6.ctor === 'Custom') {
 		return 1;
 	} else {
-		var _p5 = _p4._0.steps;
-		if (_p5.ctor === 'Nothing') {
+		var _p7 = _p6._0.steps;
+		if (_p7.ctor === 'Nothing') {
 			return 1;
 		} else {
-			return 1 + _elm_lang$core$List$length(_p5._0);
+			return 1 + _elm_lang$core$List$length(_p7._0);
 		}
 	}
 };
@@ -16150,22 +16329,22 @@ var _user$project$Main$Stepped = function (a) {
 };
 var _user$project$Main$animateSlide = F2(
 	function (slide, animate) {
-		var _p6 = slide;
-		if (_p6.ctor === 'Custom') {
-			var _p7 = _p6._0;
+		var _p8 = slide;
+		if (_p8.ctor === 'Custom') {
+			var _p9 = _p8._0;
 			return _user$project$Main$Custom(
 				_elm_lang$core$Native_Utils.update(
-					_p7,
+					_p9,
 					{
-						style: animate(_p7.style)
+						style: animate(_p9.style)
 					}));
 		} else {
-			var _p8 = _p6._0;
+			var _p10 = _p8._0;
 			return _user$project$Main$Stepped(
 				_elm_lang$core$Native_Utils.update(
-					_p8,
+					_p10,
 					{
-						style: animate(_p8.style)
+						style: animate(_p10.style)
 					}));
 		}
 	});
@@ -16182,23 +16361,23 @@ var _user$project$Main$Code = F2(
 	});
 var _user$project$Main$animateStep = F3(
 	function (slide, index, animate) {
-		var _p9 = slide;
-		if (_p9.ctor === 'Custom') {
-			var _p10 = _p9._0;
+		var _p11 = slide;
+		if (_p11.ctor === 'Custom') {
+			var _p12 = _p11._0;
 			return _user$project$Main$Custom(
 				_elm_lang$core$Native_Utils.update(
-					_p10,
+					_p12,
 					{
-						style: animate(_p10.style)
+						style: animate(_p12.style)
 					}));
 		} else {
-			var _p13 = _p9._0;
+			var _p15 = _p11._0;
 			return _user$project$Main$Stepped(
 				function () {
 					var newSteps = function () {
-						var _p11 = _p13.steps;
-						if (_p11.ctor === 'Nothing') {
-							return _p13.steps;
+						var _p13 = _p15.steps;
+						if (_p13.ctor === 'Nothing') {
+							return _p15.steps;
 						} else {
 							return _elm_lang$core$Maybe$Just(
 								A2(
@@ -16206,27 +16385,27 @@ var _user$project$Main$animateStep = F3(
 									F2(
 										function (i, step) {
 											if (_elm_lang$core$Native_Utils.eq(i, index - 1)) {
-												var _p12 = step;
-												if (_p12.ctor === 'Code') {
+												var _p14 = step;
+												if (_p14.ctor === 'Code') {
 													return A2(
 														_user$project$Main$Code,
-														animate(_p12._0),
-														_p12._1);
+														animate(_p14._0),
+														_p14._1);
 												} else {
 													return A2(
 														_user$project$Main$BulletPoints,
-														animate(_p12._0),
-														_p12._1);
+														animate(_p14._0),
+														_p14._1);
 												}
 											} else {
 												return step;
 											}
 										}),
-									_p11._0));
+									_p13._0));
 						}
 					}();
 					return _elm_lang$core$Native_Utils.update(
-						_p13,
+						_p15,
 						{steps: newSteps});
 				}());
 		}
@@ -16235,22 +16414,22 @@ var _user$project$Main$update = F2(
 	function (message, model) {
 		update:
 		while (true) {
-			var _p14 = message;
-			switch (_p14.ctor) {
+			var _p16 = message;
+			switch (_p16.ctor) {
 				case 'Key':
-					var _p15 = _p14._0;
-					if (_elm_lang$core$Native_Utils.eq(_p15, 39)) {
-						var _v10 = _user$project$Main$Forward,
-							_v11 = model;
-						message = _v10;
-						model = _v11;
+					var _p17 = _p16._0;
+					if (_elm_lang$core$Native_Utils.eq(_p17, 39)) {
+						var _v11 = _user$project$Main$Forward,
+							_v12 = model;
+						message = _v11;
+						model = _v12;
 						continue update;
 					} else {
-						if (_elm_lang$core$Native_Utils.eq(_p15, 37)) {
-							var _v12 = _user$project$Main$Back,
-								_v13 = model;
-							message = _v12;
-							model = _v13;
+						if (_elm_lang$core$Native_Utils.eq(_p17, 37)) {
+							var _v13 = _user$project$Main$Back,
+								_v14 = model;
+							message = _v13;
+							model = _v14;
 							continue update;
 						} else {
 							return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
@@ -16272,12 +16451,12 @@ var _user$project$Main$update = F2(
 												_user$project$Main$slideStepCount(slide)) : _elm_lang$core$Maybe$Nothing;
 										}),
 									model.slides))));
-					var _p16 = A2(
+					var _p18 = A2(
 						_elm_lang$core$Debug$log,
 						'switch',
 						(_elm_lang$core$Native_Utils.cmp(model.slideSubIndex, stepsInSlide - 1) < 0) ? {ctor: '_Tuple2', _0: model.slideSubIndex + 1, _1: false} : {ctor: '_Tuple2', _0: 0, _1: true});
-					var newSubIndex = _p16._0;
-					var switchSlides = _p16._1;
+					var newSubIndex = _p18._0;
+					var switchSlides = _p18._1;
 					var newIndex = switchSlides ? ((_elm_lang$core$Native_Utils.cmp(
 						model.slideIndex,
 						_elm_lang$core$List$length(model.slides) - 1) < 0) ? (model.slideIndex + 1) : 0) : model.slideIndex;
@@ -16294,7 +16473,7 @@ var _user$project$Main$update = F2(
 												_user$project$Animation$set(
 												_elm_lang$core$Native_List.fromArray(
 													[
-														_user$project$Animation$display(_user$project$Animation$block)
+														_user$project$Animation$display(_user$project$Animation$flex)
 													])),
 												_user$project$Animation$to(
 												_elm_lang$core$Native_List.fromArray(
@@ -16418,7 +16597,7 @@ var _user$project$Main$update = F2(
 													_user$project$Animation$px(100)),
 													_user$project$Animation$scale(1.2),
 													_user$project$Animation$backgroundColor(
-													A3(_elm_lang$core$Color$rgb, 240, 173, 0)),
+													A3(_elm_lang$core$Color$rgb, 59, 111, 125)),
 													_user$project$Animation$shadow(
 													{
 														offsetX: 50,
@@ -16454,9 +16633,9 @@ var _user$project$Main$update = F2(
 					};
 				case 'SwitchPolygon':
 					var newPolygon = _elm_lang$core$List$head(
-						A2(_elm_lang$core$List$drop, _p14._0, _user$project$Polygons$polygons));
-					var _p17 = newPolygon;
-					if (_p17.ctor === 'Just') {
+						A2(_elm_lang$core$List$drop, _p16._0, _user$project$Polygons$polygons));
+					var _p19 = newPolygon;
+					if (_p19.ctor === 'Just') {
 						return {
 							ctor: '_Tuple2',
 							_0: _elm_lang$core$Native_Utils.update(
@@ -16466,7 +16645,7 @@ var _user$project$Main$update = F2(
 										_user$project$Animation$interrupt,
 										_elm_lang$core$Native_List.fromArray(
 											[
-												_user$project$Animation$to(_p17._0)
+												_user$project$Animation$to(_p19._0)
 											]),
 										model.polygon)
 								}),
@@ -16476,66 +16655,66 @@ var _user$project$Main$update = F2(
 						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 					}
 				default:
-					var _p23 = _p14._0;
-					var shadow = A2(_user$project$Animation$update, _p23, model.shadow);
-					var cssFilter = A2(_user$project$Animation$update, _p23, model.cssFilter);
-					var polygon = A2(_user$project$Animation$update, _p23, model.polygon);
+					var _p25 = _p16._0;
+					var shadow = A2(_user$project$Animation$update, _p25, model.shadow);
+					var cssFilter = A2(_user$project$Animation$update, _p25, model.cssFilter);
+					var polygon = A2(_user$project$Animation$update, _p25, model.polygon);
 					var slides = A2(
 						_elm_lang$core$List$map,
 						function (slide) {
-							var _p18 = slide;
-							if (_p18.ctor === 'Custom') {
-								var _p19 = _p18._0;
+							var _p20 = slide;
+							if (_p20.ctor === 'Custom') {
+								var _p21 = _p20._0;
 								return _user$project$Main$Custom(
 									_elm_lang$core$Native_Utils.update(
-										_p19,
+										_p21,
 										{
-											style: A2(_user$project$Animation$update, _p23, _p19.style)
+											style: A2(_user$project$Animation$update, _p25, _p21.style)
 										}));
 							} else {
-								var _p22 = _p18._0;
+								var _p24 = _p20._0;
 								var newSteps = function () {
-									var _p20 = _p22.steps;
-									if (_p20.ctor === 'Nothing') {
+									var _p22 = _p24.steps;
+									if (_p22.ctor === 'Nothing') {
 										return _elm_lang$core$Maybe$Nothing;
 									} else {
 										return _elm_lang$core$Maybe$Just(
 											A2(
 												_elm_lang$core$List$map,
 												function (step) {
-													var _p21 = step;
-													if (_p21.ctor === 'Code') {
+													var _p23 = step;
+													if (_p23.ctor === 'Code') {
 														return A2(
 															_user$project$Main$Code,
-															A2(_user$project$Animation$update, _p23, _p21._0),
-															_p21._1);
+															A2(_user$project$Animation$update, _p25, _p23._0),
+															_p23._1);
 													} else {
 														return A2(
 															_user$project$Main$BulletPoints,
-															A2(_user$project$Animation$update, _p23, _p21._0),
-															_p21._1);
+															A2(_user$project$Animation$update, _p25, _p23._0),
+															_p23._1);
 													}
 												},
-												_p20._0));
+												_p22._0));
 									}
 								}();
 								return _user$project$Main$Stepped(
 									_elm_lang$core$Native_Utils.update(
-										_p22,
+										_p24,
 										{
-											style: A2(_user$project$Animation$update, _p23, _p22.style),
+											style: A2(_user$project$Animation$update, _p25, _p24.style),
 											steps: newSteps
 										}));
 							}
 						},
 						model.slides);
-					var track = A2(_user$project$Animation$update, _p23, model.track);
-					var global = A2(_user$project$Animation$update, _p23, model.gears.global);
-					var largePlanet = A2(_user$project$Animation$update, _p23, model.gears.largePlanet);
-					var mediumPlanet = A2(_user$project$Animation$update, _p23, model.gears.mediumPlanet);
-					var smallPlanet = A2(_user$project$Animation$update, _p23, model.gears.smallPlanet);
-					var sun = A2(_user$project$Animation$update, _p23, model.gears.sun);
-					var annulus = A2(_user$project$Animation$update, _p23, model.gears.annulus);
+					var track = A2(_user$project$Animation$update, _p25, model.track);
+					var global = A2(_user$project$Animation$update, _p25, model.gears.global);
+					var largePlanet = A2(_user$project$Animation$update, _p25, model.gears.largePlanet);
+					var mediumPlanet = A2(_user$project$Animation$update, _p25, model.gears.mediumPlanet);
+					var smallPlanet = A2(_user$project$Animation$update, _p25, model.gears.smallPlanet);
+					var sun = A2(_user$project$Animation$update, _p25, model.gears.sun);
+					var annulus = A2(_user$project$Animation$update, _p25, model.gears.annulus);
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
@@ -16632,7 +16811,10 @@ var _user$project$Main$slides = _elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$Main$bulletPoints(
 						_elm_lang$core$Native_List.fromArray(
-							['Stiffness - How fast does it move?', 'Damping - How fast does it settle?', 'Duration is a secondary property of the spring.']))
+							['Stiffness - How fast does it move?', 'Damping - How fast does it settle?'])),
+						_user$project$Main$bulletPoints(
+						_elm_lang$core$Native_List.fromArray(
+							['Duration is a secondary property of the spring.']))
 					]))
 		}),
 		_user$project$Main$Stepped(
@@ -16646,6 +16828,35 @@ var _user$project$Main$slides = _elm_lang$core$Native_List.fromArray(
 		_user$project$Main$Custom(
 		{html: _user$project$Main$thanks, style: _user$project$Main$initialStyle, hiddenNote: ''})
 	]);
+var _user$project$Main$Grey = {ctor: 'Grey'};
+var _user$project$Main$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A3(
+				_elm_lang$html$Html$node,
+				'link',
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$href('https://fonts.googleapis.com/css?family=Open+Sans'),
+						_elm_lang$html$Html_Attributes$rel('stylesheet')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+				A2(_user$project$Main$cornerStone, 'corner', _user$project$Main$Grey),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[_user$project$Style$container]),
+				A2(
+					_elm_lang$core$List$map,
+					_user$project$Main$viewSlide(model),
+					model.slides))
+			]));
+};
 var _user$project$Main$main = {
 	main: _elm_lang$html$Html_App$program(
 		{
@@ -16763,6 +16974,11 @@ var _user$project$Main$main = {
 			}
 		})
 };
+var _user$project$Main$Blue = {ctor: 'Blue'};
+var _user$project$Main$Purple = {ctor: 'Purple'};
+var _user$project$Main$Gold = {ctor: 'Gold'};
+var _user$project$Main$Green = {ctor: 'Green'};
+var _user$project$Main$AllColors = {ctor: 'AllColors'};
 
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};

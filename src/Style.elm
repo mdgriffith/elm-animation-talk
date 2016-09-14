@@ -41,6 +41,7 @@ frame =
         , "position" => "relative"
         , "margin" => "90px 0"
         , "justify-content" => "center"
+        , "min-height" => "400px"
           --, "background-color" => "white"
         , "width" => "800px"
         ]

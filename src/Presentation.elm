@@ -181,7 +181,7 @@ update message model =
                                     animateSlide slide <|
                                         Animation.interrupt
                                             [ Animation.set
-                                                [ Animation.display Animation.block
+                                                [ Animation.display Animation.flex
                                                 ]
                                             , Animation.to
                                                 [ Animation.opacity 1
@@ -276,7 +276,7 @@ update message model =
                         [ Animation.to
                             [ Animation.translate (px 100) (px 100)
                             , Animation.scale 1.2
-                            , Animation.backgroundColor (Color.rgb 240 173 0)
+                            , Animation.backgroundColor (Color.rgb 59 111 125)
                             , Animation.shadow
                                 { offsetX = 50
                                 , offsetY = 55
@@ -415,6 +415,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ node "link" [ href "https://fonts.googleapis.com/css?family=Open+Sans", rel "stylesheet" ] []
+        , cornerStone "corner" Grey
         , div [ Style.container ] (List.map (viewSlide model) model.slides)
         ]
 
@@ -563,7 +564,9 @@ Animation.interrupt
                 [ bulletPoints
                     [ "Stiffness - How fast does it move?"
                     , "Damping - How fast does it settle?"
-                    , "Duration is a secondary property of the spring."
+                    ]
+                , bulletPoints
+                    [ "Duration is a secondary property of the spring."
                     ]
                 ]
         }
@@ -699,9 +702,10 @@ thanks model =
     div [ Style.frame ]
         [ h1 [] [ text "Thanks!" ]
         , div []
-            [ text "Animation Library "
-            , br [] []
-            , i [] [ text "mdgriffith/elm-style-animation" ]
+            [ ul []
+                [ li [] [ text "mdgriffith/elm-style-animation" ]
+                , li [] [ text "kitten image from placekitten.com " ]
+                ]
             ]
         ]
 
@@ -807,3 +811,115 @@ main =
                     ]
             )
         }
+
+
+type CornerStoneColoring
+    = AllColors
+    | Green
+    | Gold
+    | Purple
+    | Blue
+    | Grey
+
+
+cornerStone : String -> CornerStoneColoring -> Html Msg
+cornerStone cls coloring =
+    let
+        blue =
+            "#60B5CC"
+
+        gold =
+            "#F0AD00"
+
+        purple =
+            "#5A6378"
+
+        green =
+            "#7FD13B"
+
+        grey =
+            "rgba(0,0,0,0.1)"
+
+        ( color1, color2, color3, color4 ) =
+            case coloring of
+                AllColors ->
+                    ( blue, gold, purple, green )
+
+                Green ->
+                    ( green, green, green, green )
+
+                Gold ->
+                    ( gold, gold, gold, gold )
+
+                Purple ->
+                    ( purple, purple, purple, purple )
+
+                Blue ->
+                    ( blue, blue, blue, blue )
+
+                Grey ->
+                    ( grey, grey, grey, grey )
+    in
+        div [ class cls ]
+            [ Svg.svg [ Svg.Attributes.version "1.1", Svg.Attributes.x "0px", Svg.Attributes.y "0px", Svg.Attributes.viewBox "0 0 323.1 323" ]
+                [ Svg.rect
+                    [ Svg.Attributes.x "65.6"
+                    , Svg.Attributes.y "66.5"
+                    , Svg.Attributes.transform "matrix(2.256997e-03 -1 1 2.256997e-03 -1.082 158.3655)"
+                    , style [ ( "fill", color1 ) ]
+                    , Svg.Attributes.width "26.5"
+                    , Svg.Attributes.height "26.4"
+                    ]
+                    []
+                , Svg.polygon
+                    [ style [ ( "fill", color1 ) ]
+                    , Svg.Attributes.points "62.2,62.4 0,0 0,124.5 "
+                    ]
+                    []
+                , Svg.polygon
+                    [ style [ ( "fill", color2 ) ]
+                    , Svg.Attributes.points "3.2,126.2 20.2,159.6 20.2,109.2 "
+                    ]
+                    []
+                , Svg.polygon
+                    [ style [ ( "fill", color1 ) ]
+                    , Svg.Attributes.points "161,0 131,30 299.7,0 "
+                    ]
+                    []
+                , Svg.polygon
+                    [ style [ ( "fill", color3 ) ]
+                    , Svg.Attributes.points "20.2,169.2 0,129.3 0,293 "
+                    ]
+                    []
+                , Svg.polygon
+                    [ style [ ( "fill", color4 ) ]
+                    , Svg.Attributes.points "53.3,96.4 32.9,96.4 23.6,105.8 23.6,130.7 "
+                    ]
+                    []
+                , Svg.polygon
+                    [ style [ ( "fill", color4 ) ]
+                    , Svg.Attributes.points "126,30 156,0 69.4,0 39.4,30 "
+                    ]
+                    []
+                , Svg.polygon
+                    [ style [ ( "fill", color2 ) ]
+                    , Svg.Attributes.points "34.6,30 64.6,0 4.6,0 "
+                    ]
+                    []
+                , Svg.polygon
+                    [ style [ ( "fill", color3 ) ]
+                    , Svg.Attributes.points "122.6,33.4 38,33.4 64.6,60 "
+                    ]
+                    []
+                , Svg.polygon
+                    [ style [ ( "fill", color4 ) ]
+                    , Svg.Attributes.points "92.1,63.6 92,51.5 64.8,63.6 "
+                    ]
+                    []
+                , Svg.polygon
+                    [ style [ ( "fill", color2 ) ]
+                    , Svg.Attributes.points "62.2,93 62.2,67.3 36.3,93 "
+                    ]
+                    []
+                ]
+            ]
