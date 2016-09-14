@@ -15751,7 +15751,7 @@ var _user$project$Main$initialStyle = _user$project$Animation$style(
 var _user$project$Main$initialSubStyle = _user$project$Animation$style(
 	_elm_lang$core$Native_List.fromArray(
 		[
-			_user$project$Animation$opacity(1)
+			_user$project$Animation$opacity(0)
 		]));
 var _user$project$Main$viewStep = function (step) {
 	var _p0 = step;
@@ -15858,6 +15858,19 @@ var _user$project$Main$view = function (model) {
 					_user$project$Main$viewSlide(model),
 					model.slides))
 			]));
+};
+var _user$project$Main$slideStepCount = function (slide) {
+	var _p4 = slide;
+	if (_p4.ctor === 'Custom') {
+		return 1;
+	} else {
+		var _p5 = _p4._0.steps;
+		if (_p5.ctor === 'Nothing') {
+			return 1;
+		} else {
+			return 1 + _elm_lang$core$List$length(_p5._0);
+		}
+	}
 };
 var _user$project$Main_ops = _user$project$Main_ops || {};
 _user$project$Main_ops['=>'] = F2(
@@ -15967,10 +15980,27 @@ var _user$project$Main$cornell = function (model) {
 					]))
 			]));
 };
-var _user$project$Main$Model = F9(
-	function (a, b, c, d, e, f, g, h, i) {
-		return {moving: a, track: b, gears: c, cssFilter: d, shadow: e, polygon: f, polygonIndex: g, slides: h, slideIndex: i};
-	});
+var _user$project$Main$Model = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return {moving: a, track: b, gears: c, cssFilter: d, shadow: e, polygon: f, polygonIndex: g, slides: h, slideIndex: i, slideSubIndex: j};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
 var _user$project$Main$MoveShadow = {ctor: 'MoveShadow'};
 var _user$project$Main$shadowMovement = function (model) {
 	return A2(
@@ -16120,59 +16150,142 @@ var _user$project$Main$Stepped = function (a) {
 };
 var _user$project$Main$animateSlide = F2(
 	function (slide, animate) {
-		var _p4 = slide;
-		if (_p4.ctor === 'Custom') {
-			var _p5 = _p4._0;
+		var _p6 = slide;
+		if (_p6.ctor === 'Custom') {
+			var _p7 = _p6._0;
 			return _user$project$Main$Custom(
 				_elm_lang$core$Native_Utils.update(
-					_p5,
+					_p7,
 					{
-						style: animate(_p5.style)
+						style: animate(_p7.style)
 					}));
 		} else {
-			var _p6 = _p4._0;
+			var _p8 = _p6._0;
 			return _user$project$Main$Stepped(
 				_elm_lang$core$Native_Utils.update(
-					_p6,
+					_p8,
 					{
-						style: animate(_p6.style)
+						style: animate(_p8.style)
 					}));
+		}
+	});
+var _user$project$Main$BulletPoints = F2(
+	function (a, b) {
+		return {ctor: 'BulletPoints', _0: a, _1: b};
+	});
+var _user$project$Main$bulletPoints = function (points) {
+	return A2(_user$project$Main$BulletPoints, _user$project$Main$initialSubStyle, points);
+};
+var _user$project$Main$Code = F2(
+	function (a, b) {
+		return {ctor: 'Code', _0: a, _1: b};
+	});
+var _user$project$Main$animateStep = F3(
+	function (slide, index, animate) {
+		var _p9 = slide;
+		if (_p9.ctor === 'Custom') {
+			var _p10 = _p9._0;
+			return _user$project$Main$Custom(
+				_elm_lang$core$Native_Utils.update(
+					_p10,
+					{
+						style: animate(_p10.style)
+					}));
+		} else {
+			var _p13 = _p9._0;
+			return _user$project$Main$Stepped(
+				function () {
+					var newSteps = function () {
+						var _p11 = _p13.steps;
+						if (_p11.ctor === 'Nothing') {
+							return _p13.steps;
+						} else {
+							return _elm_lang$core$Maybe$Just(
+								A2(
+									_elm_lang$core$List$indexedMap,
+									F2(
+										function (i, step) {
+											if (_elm_lang$core$Native_Utils.eq(i, index - 1)) {
+												var _p12 = step;
+												if (_p12.ctor === 'Code') {
+													return A2(
+														_user$project$Main$Code,
+														animate(_p12._0),
+														_p12._1);
+												} else {
+													return A2(
+														_user$project$Main$BulletPoints,
+														animate(_p12._0),
+														_p12._1);
+												}
+											} else {
+												return step;
+											}
+										}),
+									_p11._0));
+						}
+					}();
+					return _elm_lang$core$Native_Utils.update(
+						_p13,
+						{steps: newSteps});
+				}());
 		}
 	});
 var _user$project$Main$update = F2(
 	function (message, model) {
 		update:
 		while (true) {
-			var _p7 = message;
-			switch (_p7.ctor) {
+			var _p14 = message;
+			switch (_p14.ctor) {
 				case 'Key':
-					var _p8 = _p7._0;
-					if (_elm_lang$core$Native_Utils.eq(_p8, 39)) {
-						var _v5 = _user$project$Main$Forward,
-							_v6 = model;
-						message = _v5;
-						model = _v6;
+					var _p15 = _p14._0;
+					if (_elm_lang$core$Native_Utils.eq(_p15, 39)) {
+						var _v10 = _user$project$Main$Forward,
+							_v11 = model;
+						message = _v10;
+						model = _v11;
 						continue update;
 					} else {
-						if (_elm_lang$core$Native_Utils.eq(_p8, 37)) {
-							var _v7 = _user$project$Main$Back,
-								_v8 = model;
-							message = _v7;
-							model = _v8;
+						if (_elm_lang$core$Native_Utils.eq(_p15, 37)) {
+							var _v12 = _user$project$Main$Back,
+								_v13 = model;
+							message = _v12;
+							model = _v13;
 							continue update;
 						} else {
 							return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 						}
 					}
 				case 'Forward':
-					var newIndex = (_elm_lang$core$Native_Utils.cmp(
+					var stepsInSlide = A2(
+						_elm_lang$core$Maybe$withDefault,
+						0,
+						_elm_lang$core$List$head(
+							A2(
+								_elm_lang$core$List$filterMap,
+								_elm_lang$core$Basics$identity,
+								A2(
+									_elm_lang$core$List$indexedMap,
+									F2(
+										function (i, slide) {
+											return _elm_lang$core$Native_Utils.eq(i, model.slideIndex) ? _elm_lang$core$Maybe$Just(
+												_user$project$Main$slideStepCount(slide)) : _elm_lang$core$Maybe$Nothing;
+										}),
+									model.slides))));
+					var _p16 = A2(
+						_elm_lang$core$Debug$log,
+						'switch',
+						(_elm_lang$core$Native_Utils.cmp(model.slideSubIndex, stepsInSlide - 1) < 0) ? {ctor: '_Tuple2', _0: model.slideSubIndex + 1, _1: false} : {ctor: '_Tuple2', _0: 0, _1: true});
+					var newSubIndex = _p16._0;
+					var switchSlides = _p16._1;
+					var newIndex = switchSlides ? ((_elm_lang$core$Native_Utils.cmp(
 						model.slideIndex,
-						_elm_lang$core$List$length(model.slides) - 1) < 0) ? (model.slideIndex + 1) : 0;
+						_elm_lang$core$List$length(model.slides) - 1) < 0) ? (model.slideIndex + 1) : 0) : model.slideIndex;
 					var newSlides = A2(
 						_elm_lang$core$List$indexedMap,
 						F2(
 							function (i, slide) {
-								return _elm_lang$core$Native_Utils.eq(i, newIndex) ? A2(
+								return _elm_lang$core$Native_Utils.eq(i, newIndex) ? (switchSlides ? A2(
 									_user$project$Main$animateSlide,
 									slide,
 									_user$project$Animation$interrupt(
@@ -16188,7 +16301,19 @@ var _user$project$Main$update = F2(
 													[
 														_user$project$Animation$opacity(1)
 													]))
-											]))) : (_elm_lang$core$Native_Utils.eq(i, model.slideIndex) ? A2(
+											]))) : A3(
+									_user$project$Main$animateStep,
+									slide,
+									newSubIndex,
+									_user$project$Animation$interrupt(
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_user$project$Animation$to(
+												_elm_lang$core$Native_List.fromArray(
+													[
+														_user$project$Animation$opacity(1)
+													]))
+											])))) : ((switchSlides && _elm_lang$core$Native_Utils.eq(i, model.slideIndex)) ? A2(
 									_user$project$Main$animateSlide,
 									slide,
 									_user$project$Animation$interrupt(
@@ -16207,7 +16332,7 @@ var _user$project$Main$update = F2(
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{slideIndex: newIndex, slides: newSlides}),
+							{slideIndex: newIndex, slideSubIndex: newSubIndex, slides: newSlides}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				case 'Back':
@@ -16329,9 +16454,9 @@ var _user$project$Main$update = F2(
 					};
 				case 'SwitchPolygon':
 					var newPolygon = _elm_lang$core$List$head(
-						A2(_elm_lang$core$List$drop, _p7._0, _user$project$Polygons$polygons));
-					var _p9 = newPolygon;
-					if (_p9.ctor === 'Just') {
+						A2(_elm_lang$core$List$drop, _p14._0, _user$project$Polygons$polygons));
+					var _p17 = newPolygon;
+					if (_p17.ctor === 'Just') {
 						return {
 							ctor: '_Tuple2',
 							_0: _elm_lang$core$Native_Utils.update(
@@ -16341,7 +16466,7 @@ var _user$project$Main$update = F2(
 										_user$project$Animation$interrupt,
 										_elm_lang$core$Native_List.fromArray(
 											[
-												_user$project$Animation$to(_p9._0)
+												_user$project$Animation$to(_p17._0)
 											]),
 										model.polygon)
 								}),
@@ -16351,40 +16476,66 @@ var _user$project$Main$update = F2(
 						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 					}
 				default:
-					var _p13 = _p7._0;
-					var shadow = A2(_user$project$Animation$update, _p13, model.shadow);
-					var cssFilter = A2(_user$project$Animation$update, _p13, model.cssFilter);
-					var polygon = A2(_user$project$Animation$update, _p13, model.polygon);
+					var _p23 = _p14._0;
+					var shadow = A2(_user$project$Animation$update, _p23, model.shadow);
+					var cssFilter = A2(_user$project$Animation$update, _p23, model.cssFilter);
+					var polygon = A2(_user$project$Animation$update, _p23, model.polygon);
 					var slides = A2(
 						_elm_lang$core$List$map,
 						function (slide) {
-							var _p10 = slide;
-							if (_p10.ctor === 'Custom') {
-								var _p11 = _p10._0;
+							var _p18 = slide;
+							if (_p18.ctor === 'Custom') {
+								var _p19 = _p18._0;
 								return _user$project$Main$Custom(
 									_elm_lang$core$Native_Utils.update(
-										_p11,
+										_p19,
 										{
-											style: A2(_user$project$Animation$update, _p13, _p11.style)
+											style: A2(_user$project$Animation$update, _p23, _p19.style)
 										}));
 							} else {
-								var _p12 = _p10._0;
+								var _p22 = _p18._0;
+								var newSteps = function () {
+									var _p20 = _p22.steps;
+									if (_p20.ctor === 'Nothing') {
+										return _elm_lang$core$Maybe$Nothing;
+									} else {
+										return _elm_lang$core$Maybe$Just(
+											A2(
+												_elm_lang$core$List$map,
+												function (step) {
+													var _p21 = step;
+													if (_p21.ctor === 'Code') {
+														return A2(
+															_user$project$Main$Code,
+															A2(_user$project$Animation$update, _p23, _p21._0),
+															_p21._1);
+													} else {
+														return A2(
+															_user$project$Main$BulletPoints,
+															A2(_user$project$Animation$update, _p23, _p21._0),
+															_p21._1);
+													}
+												},
+												_p20._0));
+									}
+								}();
 								return _user$project$Main$Stepped(
 									_elm_lang$core$Native_Utils.update(
-										_p12,
+										_p22,
 										{
-											style: A2(_user$project$Animation$update, _p13, _p12.style)
+											style: A2(_user$project$Animation$update, _p23, _p22.style),
+											steps: newSteps
 										}));
 							}
 						},
 						model.slides);
-					var track = A2(_user$project$Animation$update, _p13, model.track);
-					var global = A2(_user$project$Animation$update, _p13, model.gears.global);
-					var largePlanet = A2(_user$project$Animation$update, _p13, model.gears.largePlanet);
-					var mediumPlanet = A2(_user$project$Animation$update, _p13, model.gears.mediumPlanet);
-					var smallPlanet = A2(_user$project$Animation$update, _p13, model.gears.smallPlanet);
-					var sun = A2(_user$project$Animation$update, _p13, model.gears.sun);
-					var annulus = A2(_user$project$Animation$update, _p13, model.gears.annulus);
+					var track = A2(_user$project$Animation$update, _p23, model.track);
+					var global = A2(_user$project$Animation$update, _p23, model.gears.global);
+					var largePlanet = A2(_user$project$Animation$update, _p23, model.gears.largePlanet);
+					var mediumPlanet = A2(_user$project$Animation$update, _p23, model.gears.mediumPlanet);
+					var smallPlanet = A2(_user$project$Animation$update, _p23, model.gears.smallPlanet);
+					var sun = A2(_user$project$Animation$update, _p23, model.gears.sun);
+					var annulus = A2(_user$project$Animation$update, _p23, model.gears.annulus);
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
@@ -16401,17 +16552,6 @@ var _user$project$Main$update = F2(
 					};
 			}
 		}
-	});
-var _user$project$Main$BulletPoints = F2(
-	function (a, b) {
-		return {ctor: 'BulletPoints', _0: a, _1: b};
-	});
-var _user$project$Main$bulletPoints = function (points) {
-	return A2(_user$project$Main$BulletPoints, _user$project$Main$initialSubStyle, points);
-};
-var _user$project$Main$Code = F2(
-	function (a, b) {
-		return {ctor: 'Code', _0: a, _1: b};
 	});
 var _user$project$Main$someCode = function (str) {
 	return A2(_user$project$Main$Code, _user$project$Main$initialSubStyle, str);
@@ -16602,7 +16742,8 @@ var _user$project$Main$main = {
 								_user$project$Animation$greyscale(0)
 							])),
 					slides: _user$project$Main$slides,
-					slideIndex: 0
+					slideIndex: 0,
+					slideSubIndex: 0
 				},
 				_1: _elm_lang$core$Platform_Cmd$none
 			},

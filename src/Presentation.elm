@@ -47,6 +47,7 @@ type alias Model =
     , polygonIndex : Int
     , slides : List Slide
     , slideIndex : Int
+    , slideSubIndex : Int
     }
 
 
@@ -69,6 +70,21 @@ type Step
     | BulletPoints Animation.State (List String)
 
 
+slideStepCount : Slide -> Int
+slideStepCount slide =
+    case slide of
+        Custom _ ->
+            1
+
+        Stepped content ->
+            case content.steps of
+                Nothing ->
+                    1
+
+                Just allSteps ->
+                    1 + List.length allSteps
+
+
 animateSlide slide animate =
     case slide of
         Custom content ->
@@ -78,6 +94,39 @@ animateSlide slide animate =
         Stepped content ->
             Stepped
                 { content | style = animate content.style }
+
+
+animateStep slide index animate =
+    case slide of
+        Custom content ->
+            Custom
+                { content | style = animate content.style }
+
+        Stepped content ->
+            Stepped <|
+                let
+                    newSteps =
+                        case content.steps of
+                            Nothing ->
+                                content.steps
+
+                            Just steps ->
+                                Just <|
+                                    List.indexedMap
+                                        (\i step ->
+                                            if i == index - 1 then
+                                                case step of
+                                                    Code style content ->
+                                                        Code (animate style) content
+
+                                                    BulletPoints style points ->
+                                                        BulletPoints (animate style) points
+                                            else
+                                                step
+                                        )
+                                        steps
+                in
+                    { content | steps = newSteps }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -95,26 +144,57 @@ update message model =
 
         Forward ->
             let
+                stepsInSlide =
+                    Maybe.withDefault 0 <|
+                        List.head <|
+                            List.filterMap identity <|
+                                List.indexedMap
+                                    (\i slide ->
+                                        if i == model.slideIndex then
+                                            Just <| slideStepCount slide
+                                        else
+                                            Nothing
+                                    )
+                                    model.slides
+
+                ( newSubIndex, switchSlides ) =
+                    Debug.log "switch" <|
+                        if model.slideSubIndex < stepsInSlide - 1 then
+                            ( model.slideSubIndex + 1, False )
+                        else
+                            ( 0, True )
+
                 newIndex =
-                    if model.slideIndex < List.length model.slides - 1 then
-                        model.slideIndex + 1
+                    if switchSlides then
+                        if model.slideIndex < List.length model.slides - 1 then
+                            model.slideIndex + 1
+                        else
+                            0
                     else
-                        0
+                        model.slideIndex
 
                 newSlides =
                     List.indexedMap
                         (\i slide ->
                             if i == newIndex then
-                                animateSlide slide <|
-                                    Animation.interrupt
-                                        [ Animation.set
-                                            [ Animation.display Animation.block
+                                if switchSlides then
+                                    animateSlide slide <|
+                                        Animation.interrupt
+                                            [ Animation.set
+                                                [ Animation.display Animation.block
+                                                ]
+                                            , Animation.to
+                                                [ Animation.opacity 1
+                                                ]
                                             ]
-                                        , Animation.to
-                                            [ Animation.opacity 1
+                                else
+                                    animateStep slide newSubIndex <|
+                                        Animation.interrupt
+                                            [ Animation.to
+                                                [ Animation.opacity 1
+                                                ]
                                             ]
-                                        ]
-                            else if i == model.slideIndex then
+                            else if switchSlides && i == model.slideIndex then
                                 animateSlide slide <|
                                     Animation.interrupt
                                         [ Animation.set
@@ -129,6 +209,7 @@ update message model =
             in
                 ( { model
                     | slideIndex = newIndex
+                    , slideSubIndex = newSubIndex
                     , slides = newSlides
                   }
                 , Cmd.none
@@ -275,10 +356,30 @@ update message model =
                                         }
 
                                 Stepped content ->
-                                    Stepped
-                                        { content
-                                            | style = Animation.update animMsg content.style
-                                        }
+                                    let
+                                        newSteps =
+                                            case content.steps of
+                                                Nothing ->
+                                                    Nothing
+
+                                                Just steps ->
+                                                    Just <|
+                                                        List.map
+                                                            (\step ->
+                                                                case step of
+                                                                    Code style content ->
+                                                                        Code (Animation.update animMsg style) content
+
+                                                                    BulletPoints style content ->
+                                                                        BulletPoints (Animation.update animMsg style) content
+                                                            )
+                                                            steps
+                                    in
+                                        Stepped
+                                            { content
+                                                | style = Animation.update animMsg content.style
+                                                , steps = newSteps
+                                            }
                         )
                         model.slides
 
@@ -361,7 +462,7 @@ viewStep step =
 
 initialSubStyle =
     Animation.style
-        [ Animation.opacity 1
+        [ Animation.opacity 0
         ]
 
 
@@ -678,6 +779,7 @@ main =
                         ]
               , slides = slides
               , slideIndex = 0
+              , slideSubIndex = 0
               }
             , Cmd.none
             )

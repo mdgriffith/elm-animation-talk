@@ -59,7 +59,6 @@ gears =
     Html.Attributes.style <|
         --[ "fill" => "#c19849"
         [ "fill" => "#c19849"
-          --, "stroke" => "#888"
         , "stroke" => "white"
         , "stroke-width" => "2px"
         ]
