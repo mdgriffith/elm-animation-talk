@@ -9,7 +9,7 @@ import Html.Attributes
 
 base =
     [ "font-size" => "25px"
-    , "color" => "#111"
+    , "color" => "white"
     , "font-family" => "Open Sans"
     ]
 
@@ -22,7 +22,7 @@ container =
         , "position" => "relative"
         , "margin" => "90px auto"
         , "justify-content" => "center"
-        , "background-color" => "white"
+          --, "background-color" => "white"
         , "width" => "800px"
         ]
             ++ base
@@ -41,10 +41,18 @@ frame =
         , "position" => "relative"
         , "margin" => "90px 0"
         , "justify-content" => "center"
-        , "background-color" => "white"
+          --, "background-color" => "white"
         , "width" => "800px"
         ]
             ++ base
+
+
+horizontal =
+    Html.Attributes.style <|
+        [ "display" => "flex"
+        , "flex-direction" => "row"
+        , "justify-content" => "center"
+        ]
 
 
 gears =
@@ -72,4 +80,37 @@ body =
 code =
     Html.Attributes.style <|
         [ "white-space" => "pre"
+        , "font-family" => "Inconsolata"
+        ]
+
+
+hiring =
+    Html.Attributes.style <|
+        [ "background-color" => "rgba(0,0,0,0.1)"
+        , "border-radius" => "3px"
+        , "padding" => "5px 20px"
+        , "width" => "300px"
+        , "margin" => "0 auto"
+        , "margin-top" => "30px"
+        ]
+
+
+name =
+    Html.Attributes.style <|
+        [ "font-size" => "37px"
+        , "margin-bottom" => "60px"
+        ]
+
+
+animHeader =
+    Html.Attributes.style <|
+        [ "margin-bottom" => "0"
+        ]
+
+
+shadow =
+    Html.Attributes.style <|
+        [ "border-radius" => "5px"
+        , "width" => "200px"
+        , "height" => "200px"
         ]

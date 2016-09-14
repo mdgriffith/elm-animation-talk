@@ -92,6 +92,8 @@ beginInitialRotate gears =
                 [ Animation.loop
                     [ Animation.toWith (Animation.speed { perSecond = 1 * factor })
                         [ Animation.rotate (turn 1) ]
+                    , Animation.set
+                        [ Animation.rotate (turn 0) ]
                     ]
                 ]
                 gears.annulus
@@ -100,7 +102,10 @@ beginInitialRotate gears =
             Animation.interrupt
                 [ Animation.loop
                     [ Animation.toWith (Animation.speed { perSecond = 3.3636 * factor })
-                        [ Animation.rotate (turn -1) ]
+                        [ Animation.rotate (turn -1)
+                        ]
+                    , Animation.set
+                        [ Animation.rotate (turn 0) ]
                     ]
                 ]
                 gears.sun
@@ -110,6 +115,8 @@ beginInitialRotate gears =
                 [ Animation.loop
                     [ Animation.toWith (Animation.speed { perSecond = 5.28571428571429 * factor })
                         [ Animation.rotate (turn 1) ]
+                    , Animation.set
+                        [ Animation.rotate (turn 0) ]
                     ]
                 ]
                 gears.smallPlanet
@@ -119,6 +126,8 @@ beginInitialRotate gears =
                 [ Animation.loop
                     [ Animation.toWith (Animation.speed { perSecond = 3.3636 * factor })
                         [ Animation.rotate (turn 1) ]
+                    , Animation.set
+                        [ Animation.rotate (turn 0) ]
                     ]
                 ]
                 gears.mediumPlanet
@@ -128,6 +137,8 @@ beginInitialRotate gears =
                 [ Animation.loop
                     [ Animation.toWith (Animation.speed { perSecond = 1.94736842105263 * factor })
                         [ Animation.rotate (turn 1) ]
+                    , Animation.set
+                        [ Animation.rotate (turn 0) ]
                     ]
                 ]
                 gears.largePlanet
@@ -137,6 +148,8 @@ beginInitialRotate gears =
                 [ Animation.loop
                     [ Animation.toWith (Animation.speed { perSecond = 1 * factor })
                         [ Animation.rotate (turn -1) ]
+                    , Animation.set
+                        [ Animation.rotate (turn 0) ]
                     ]
                 ]
                 gears.global

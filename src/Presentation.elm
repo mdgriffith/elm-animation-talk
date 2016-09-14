@@ -12,6 +12,8 @@ import Svg
 import Svg.Attributes
 import Mouse
 import Keyboard
+import Color
+import Polygons
 
 
 (=>) =
@@ -23,6 +25,9 @@ type Msg
     | Forward
     | Back
     | Key Int
+    | SwitchPolygon Int
+    | ActivateFilter
+    | MoveShadow
 
 
 type alias Model =
@@ -36,6 +41,10 @@ type alias Model =
         , largePlanet : Animation.State
         , global : Animation.State
         }
+    , cssFilter : Animation.State
+    , shadow : Animation.State
+    , polygon : Animation.State
+    , polygonIndex : Int
     , slides : List Slide
     , slideIndex : Int
     }
@@ -58,140 +67,6 @@ type Slide
 type Step
     = Code Animation.State String
     | BulletPoints Animation.State (List String)
-
-
-
---isFocused : Slide -> Bool
---isFocused slide =
---    case slide of
---        Custom frame ->
---            frame.focus
---        Stepped frame ->
---            frame.focus
---isFinished : Slide -> Bool
---isFinished slide =
---    Debug.log "is-finished" <|
---        case slide of
---            Custom frame ->
---                frame.focus == True
---            Stepped frame ->
---                case frame.steps of
---                    Nothing ->
---                        frame.focus == True
---                    Just steps ->
---                        List.reverse steps
---                            |> List.head
---                            |> Maybe.map stepIsFinished
---                            |> Maybe.withDefault False
---markAsFinished : Slide -> Slide
---markAsFinished slide =
---    case slide of
---        Custom frame ->
---            Custom { frame | focus = True }
---        Stepped frame ->
---            Stepped
---                { frame
---                    | focus = True
---                    , steps = Maybe.map (List.map markAsFinishedStep) frame.steps
---                }
---markAsFinishedStep : Step -> Step
---markAsFinishedStep step =
---    case step of
---        Code content ->
---            Code { content | focus = True }
---        BulletPoints bullets ->
---            BulletPoints <|
---                List.map (\bull -> { bull | focus = True }) bullets
---stepHasFocus : Step -> Bool
---stepHasFocus step =
---    case step of
---        Code content ->
---            content.focus
---        BulletPoints bullets ->
---            List.any .focus bullets
---stepIsFinished : Step -> Bool
---stepIsFinished step =
---    case step of
---        Code content ->
---            content.focus
---        BulletPoints bullets ->
---            List.reverse bullets
---                |> List.head
---                |> Maybe.map .focus
---                |> Maybe.withDefault False
---advanceStep step =
---    case step of
---        Code content ->
---            Code { content | focus = not content.focus }
---        BulletPoints bullets ->
---            if List.any .focus <| List.drop (List.length bullets - 1) bullets then
---                markAsFinishedStep step
---            else if List.any .focus bullets then
---                BulletPoints <|
---                    fst <|
---                        List.foldl
---                            (\bull ( allBullets, previousFlagged ) ->
---                                if previousFlagged then
---                                    ( allBullets ++ [ { bull | focus = True } ], False )
---                                else
---                                    ( allBullets ++ [ bull ], bull.focus )
---                            )
---                            ( [], False )
---                            bullets
---            else
---                case bullets of
---                    [] ->
---                        BulletPoints bullets
---                    b :: bs ->
---                        BulletPoints <| { b | focus = True } :: bs
---advance : Slide -> Slide
---advance slide =
---    case slide of
---        Custom frame ->
---            Custom { frame | focus = True }
---        Stepped frame ->
---            case frame.steps of
---                Nothing ->
---                    Stepped { frame | focus = True }
---                Just steps ->
---                    if List.any stepHasFocus steps then
---                        let
---                            advancedSteps =
---                                fst <|
---                                    List.foldl
---                                        (\step ( newSteps, focusPointPassed ) ->
---                                            if focusPointPassed then
---                                                ( newSteps ++ [ advanceStep step ], False )
---                                            else if stepHasFocus step then
---                                                if stepIsFinished step then
---                                                    ( newSteps ++ [ markAsFinishedStep step ], True )
---                                                else
---                                                    ( newSteps ++ [ advanceStep step ], False )
---                                            else
---                                                ( newSteps ++ [ step ], False )
---                                        )
---                                        ( [], False )
---                                        steps
---                        in
---                            Stepped
---                                { frame
---                                    | focus = True
---                                    , steps = Just advancedSteps
---                                }
---                    else
---                        case steps of
---                            [] ->
---                                Stepped
---                                    { frame
---                                        | focus = True
---                                    }
---                            s :: alls ->
---                                Stepped
---                                    { frame
---                                        | focus = True
---                                        , steps = Just (advanceStep s :: alls)
---                                    }
---animateSlide : Slide ->
 
 
 animateSlide slide animate =
@@ -300,34 +175,72 @@ update message model =
                 , Cmd.none
                 )
 
-        --let
-        --    newSlides =
-        --        List.reverse <|
-        --            fst <|
-        --                List.foldl
-        --                    (\slide ( allSlides, previousFrameFinished ) ->
-        --                        let
-        --                            ( newSlide, fin ) =
-        --                                if previousFrameFinished then
-        --                                    ( advance slide, False )
-        --                                else if isFocused slide then
-        --                                    if isFinished slide then
-        --                                        ( markAsFinished slide, True )
-        --                                    else
-        --                                        ( advance slide, False )
-        --                                else
-        --                                    ( slide, previousFrameFinished )
-        --                        in
-        --                            ( newSlide :: allSlides, fin )
-        --                    )
-        --                    ( [], False )
-        --                    model.slides
-        --    _ =
-        --        Debug.log "focus" <| toString <| List.map isFocused newSlides
-        --in
-        --    ( { model | slides = newSlides }
-        --    , Cmd.none
-        --    )
+        ActivateFilter ->
+            ( { model
+                | cssFilter =
+                    Animation.interrupt
+                        [ Animation.to
+                            [ Animation.greyscale 100
+                            ]
+                        ]
+                        model.cssFilter
+              }
+            , Cmd.none
+            )
+
+        MoveShadow ->
+            ( { model
+                | shadow =
+                    Animation.interrupt
+                        [ Animation.to
+                            [ Animation.translate (px 100) (px 100)
+                            , Animation.scale 1.2
+                            , Animation.backgroundColor (Color.rgb 240 173 0)
+                            , Animation.shadow
+                                { offsetX = 50
+                                , offsetY = 55
+                                , blur = 15
+                                , size = 0
+                                , color = Color.rgba 0 0 0 0.1
+                                }
+                            ]
+                        , Animation.to
+                            [ Animation.translate (px 0) (px 0)
+                            , Animation.scale 1
+                            , Animation.backgroundColor (Color.rgb 96 181 204)
+                            , Animation.shadow
+                                { offsetX = 0
+                                , offsetY = 0
+                                , size = 0
+                                , blur = 2
+                                , color = Color.rgba 0 0 0 0.1
+                                }
+                            ]
+                        ]
+                        model.shadow
+              }
+            , Cmd.none
+            )
+
+        SwitchPolygon i ->
+            let
+                newPolygon =
+                    List.head <| List.drop i Polygons.polygons
+            in
+                case newPolygon of
+                    Just poly ->
+                        ( { model
+                            | polygon =
+                                Animation.interrupt
+                                    [ Animation.to poly ]
+                                    model.polygon
+                          }
+                        , Cmd.none
+                        )
+
+                    Nothing ->
+                        ( model, Cmd.none )
+
         Animate animMsg ->
             let
                 annulus =
@@ -368,10 +281,22 @@ update message model =
                                         }
                         )
                         model.slides
+
+                polygon =
+                    Animation.update animMsg model.polygon
+
+                cssFilter =
+                    Animation.update animMsg model.cssFilter
+
+                shadow =
+                    Animation.update animMsg model.shadow
             in
                 ( { model
                     | track = track
                     , slides = slides
+                    , polygon = polygon
+                    , cssFilter = cssFilter
+                    , shadow = shadow
                     , gears =
                         { annulus = annulus
                         , sun = sun
@@ -383,25 +308,6 @@ update message model =
                   }
                 , Cmd.none
                 )
-
-
-
---div
---            (Animation.render model.track
---                ++ [ style
---                        [ ( "position", "fixed" )
---                        , ( "width", "20px" )
---                        , ( "height", "20px" )
---                        , ( "border-radius", "10px" )
---                        , ( "background-color", "#CCC" )
---                        , ( "z-index", "500" )
---                        , ( "margin-left", "-10px" )
---                        , ( "margin-top", "-10px" )
---                        ]
---                   , onMouseDown StartDragging
---                   ]
---            )
---            []
 
 
 view : Model -> Html Msg
@@ -438,7 +344,7 @@ viewStep : Step -> Html Msg
 viewStep step =
     case step of
         Code style content ->
-            Html.code (Animation.render style ++ [ Style.code ])
+            Html.code (Animation.render style ++ [ Style.code, class "elm" ])
                 [ text content
                 ]
 
@@ -493,7 +399,7 @@ slides =
         , steps =
             Just
                 [ bulletPoints
-                    [ "fade in"
+                    [ "fade in and change position"
                     , "then tell me it's done"
                     , "then begin rotating until further notice"
                     ]
@@ -506,13 +412,15 @@ slides =
         , steps =
             Just
                 [ someCode """
-    [ Animation.to [ opacity 1 ]
-    , Animation.send DoneFadingIn
-    , Animation.loop
-          [ Animation.to [ rotate (degrees 360) ]
-          , Animateion.set [ rotate (degrees 0) ]
-          ]
-    ]
+[ to [ opacity 1
+     , left (px 200)
+     ]
+, send DoneFadingIn
+, loop
+      [ to [ rotate (degrees 360) ]
+      , set [ rotate (degrees 0) ]
+      ]
+]
 """
                 ]
         }
@@ -527,13 +435,8 @@ slides =
                     , "Queue up after it"
                     ]
                 , someCode """
-Animation.interrupt -- or Animation.queue
-    [ Animation.to [ opacity 1 ]
-    , Animation.send DoneFadingIn
-    , Animation.loop
-          [ Animation.to [ rotate (degrees 360) ]
-          , Animateion.set [ rotate (degrees 0) ]
-          ]
+Animation.interrupt
+    [ ourListofInstructions
     ]
 """
                 ]
@@ -546,10 +449,7 @@ Animation.interrupt -- or Animation.queue
             Just
                 [ bulletPoints
                     [ "Duration/Easing"
-                    , "Springs <- default in elm-style-animation"
-                    , "Use springs"
-                    , "You might want to use springs"
-                    , "Springs are probably what you want"
+                    , "Springs (default in elm-style-animation)"
                     ]
                 ]
         }
@@ -572,56 +472,20 @@ Animation.interrupt -- or Animation.queue
         , style = initialStyle
         , steps = Nothing
         }
-    , Stepped
-        { title = "Like CSS Filters!"
-        , hiddenNote = ""
+    , Custom
+        { hiddenNote = ""
         , style = initialStyle
-        , steps =
-            Just
-                [ someCode """
-Animation.to
-  [ Animation.blur (px 5)
-  , Animation.greyscale (100)
-  ]
-
-                    """
-                ]
+        , html = cssFilters
         }
-    , Stepped
-        { title = "Polygon Morphing!"
-        , hiddenNote = ""
+    , Custom
+        { hiddenNote = ""
         , style = initialStyle
-        , steps =
-            Just
-                [ someCode """
-Animation.interrupt
-    [ Animation.to [ opacity 1 ]
-    , Animation.to [ opacity 1 ]
-    , Animation.to [ opacity 1 ]
-    ]
-
-
-                    """
-                ]
+        , html = polygonTransitions
         }
-    , Stepped
-        { title = "And Shadows!"
-        , hiddenNote = ""
+    , Custom
+        { hiddenNote = ""
         , style = initialStyle
-        , steps =
-            Just
-                [ someCode """
-Animation.to
-       [ Animation.shadow
-                 { offsetX = 0
-                 , offsetY = 1
-                 , size = 0
-                 , blur = 2
-                 , color = black
-                 }
-      ]
-                    """
-                ]
+        , html = shadowMovement
         }
     , Custom
         { html = thanks
@@ -633,7 +497,7 @@ Animation.to
 
 cornell model =
     div [ Style.frame, Style.cornell ]
-        [ div []
+        [ div [ Style.name ]
             [ text "Matthew Griffith"
             ]
         , div
@@ -647,8 +511,8 @@ cornell model =
                     [ src "http://blog.cornelltech.io/content/images/2016/06/Mark-Solid-Foundry-F-Gradient.png"
                     , style
                         [ "width" => "auto"
-                        , "height" => "60px"
-                        , "padding" => "20px"
+                        , "height" => "120px"
+                        , "padding" => "35px"
                         ]
                     ]
                     []
@@ -660,7 +524,7 @@ cornell model =
                     [ src "https://mdgriffith.github.io/cornelltech/CornellTechLogo.png"
                     , style
                         [ "width" => "auto"
-                        , "height" => "100px"
+                        , "height" => "190px"
                         , "padding" => "0 45px"
                         ]
                     ]
@@ -669,7 +533,64 @@ cornell model =
                 , text "@ Cornell Tech"
                 ]
             ]
-        , div [] [ text "We're hiring!" ]
+        , br [] []
+        , div [ Style.hiring ] [ text "We're hiring!" ]
+        ]
+
+
+cssFilters model =
+    div [ Style.frame ]
+        [ h1 [] [ text "Like CSS Filters!" ]
+        , div [ Style.horizontal ]
+            [ img (Animation.render model.cssFilter ++ [ src "http://placekitten.com/300/300?image=10", onClick ActivateFilter ]) []
+            , Html.code [ Style.code ] [ text """
+Animation.to
+    [ Animation.greyscale (100)
+    ]
+
+                    """ ]
+            ]
+        ]
+
+
+shadowMovement model =
+    div [ Style.frame ]
+        [ h1 [] [ text "Or shadows!" ]
+        , div [ Style.horizontal ]
+            [ div (Animation.render model.shadow ++ [ onMouseOver MoveShadow, Style.shadow ]) []
+            , Html.code [ Style.code ] [ text """
+Animation.to
+   [ Animation.shadow
+         { offsetX = 0
+         , offsetY = 1
+         , size = 0
+         , blur = 2
+         , color = black
+         }
+  ]
+
+                    """ ]
+            ]
+        ]
+
+
+polygonTransitions model =
+    div [ Style.frame ]
+        [ h1 [] [ text "Polygon Transitions!" ]
+        , div [ Style.horizontal ]
+            [ div [] [ Polygons.view model.polygon SwitchPolygon ]
+            , Html.code [ Style.code ] [ text """
+Animation.to
+    [ Animation.points
+        [ ( 161.649, 170.517 )
+        , ( 8.869, 323.298 )
+        , ( 314.43, 323.298 )
+        ]
+    , Animation.fill (Color.rgb 230 230 230)
+    ]
+
+                    """ ]
+            ]
         ]
 
 
@@ -688,7 +609,7 @@ talkIntro model =
     div [ Style.frame, Style.gearsSvg ]
         [ Gears.viewPlanetary model.gears
         , div []
-            [ h1 [] [ text "animation in elm" ]
+            [ h1 [ Style.animHeader ] [ text "animation in elm" ]
             , text "using the "
             , i [] [ text "elm-style-animation" ]
             , text " library"
@@ -726,6 +647,35 @@ main =
                             Animation.style
                                 [ Animation.rotate (turn 0) ]
                         }
+              , polygon =
+                    Animation.style
+                        [ Animation.points
+                            [ ( 8.867, 0 )
+                            , ( 79.241, 70.375 )
+                            , ( 232.213, 70.375 )
+                            , ( 161.838, 0 )
+                            ]
+                        , Animation.fill <| Color.rgb 127 209 59
+                        ]
+              , shadow =
+                    Animation.style
+                        [ Animation.shadow
+                            { offsetX = 0
+                            , offsetY = 1
+                            , size = 0
+                            , blur = 2
+                            , color = Color.rgba 0 0 0 0.1
+                            }
+                        , Animation.translate (px 0) (px 0)
+                        , Animation.scale 1
+                        , Animation.backgroundColor (Color.rgb 96 181 204)
+                        ]
+              , polygonIndex = 1
+              , cssFilter =
+                    Animation.style
+                        [ Animation.blur (Animation.px 0)
+                        , Animation.greyscale 0
+                        ]
               , slides = slides
               , slideIndex = 0
               }
