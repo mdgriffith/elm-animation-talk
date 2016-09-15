@@ -15991,7 +15991,7 @@ var _user$project$Main$thanks = function (model) {
 									[]),
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_elm_lang$html$Html$text('slides at github.com/mdgriffith/elm-rich-animation-talk')
+										_elm_lang$html$Html$text('slides at github.com/mdgriffith/elm-animation-talk')
 									]))
 							]))
 					]))

@@ -908,7 +908,7 @@ thanks model =
                 [ li [] [ text "mdgriffith/elm-style-animation v3.0.0" ]
                 , li [] [ text "kitten image from placekitten.com " ]
                 , li [] [ text "special thanks to the organizers of ElmConf!" ]
-                , li [] [ text "slides at github.com/mdgriffith/elm-rich-animation-talk" ]
+                , li [] [ text "slides at github.com/mdgriffith/elm-animation-talk" ]
                 ]
             ]
         ]
