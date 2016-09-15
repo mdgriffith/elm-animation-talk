@@ -7,4 +7,4 @@
 
 
 
-
+The library I speak on is at [https://github.com/mdgriffith/elm-style-animation](https://github.com/mdgriffith/elm-style-animation)
