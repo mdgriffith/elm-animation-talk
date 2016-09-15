@@ -15984,6 +15984,14 @@ var _user$project$Main$thanks = function (model) {
 								_elm_lang$core$Native_List.fromArray(
 									[
 										_elm_lang$html$Html$text('special thanks to the organizers of ElmConf!')
+									])),
+								A2(
+								_elm_lang$html$Html$li,
+								_elm_lang$core$Native_List.fromArray(
+									[]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('slides at github.com/mdgriffith/elm-rich-animation-talk')
 									]))
 							]))
 					]))
@@ -16212,7 +16220,15 @@ var _user$project$Main$Model = function (a) {
 									return function (j) {
 										return function (k) {
 											return function (l) {
-												return {moving: a, track: b, gears: c, cssFilter: d, shadow: e, polygon: f, polygonIndex: g, slides: h, slideIndex: i, slideSubIndex: j, staggers: k, staggerIsLeft: l};
+												return function (m) {
+													return function (n) {
+														return function (o) {
+															return function (p) {
+																return {moving: a, track: b, gears: c, cssFilter: d, shadow: e, polygon: f, polygonIndex: g, slides: h, slideIndex: i, slideSubIndex: j, staggers: k, staggerIsLeft: l, spring1: m, spring2: n, spring3: o, spring4: p};
+															};
+														};
+													};
+												};
 											};
 										};
 									};
@@ -16229,6 +16245,59 @@ var _user$project$Main$StaggerRight = {ctor: 'StaggerRight'};
 var _user$project$Main$StaggerLeft = {ctor: 'StaggerLeft'};
 var _user$project$Main$ToggleStagger = {ctor: 'ToggleStagger'};
 var _user$project$Main$staggerMovement = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[_user$project$Style$frame]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$h1,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Stagger Movement')
+					])),
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[_user$project$Style$horizontal]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$div,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Events$onClick(_user$project$Main$ToggleStagger),
+								_user$project$Style$staggerBox
+							]),
+						A2(
+							_elm_lang$core$List$map,
+							function (style) {
+								return A2(
+									_elm_lang$html$Html$div,
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_user$project$Animation$render(style),
+										_elm_lang$core$Native_List.fromArray(
+											[_user$project$Style$staggerDot])),
+									_elm_lang$core$Native_List.fromArray(
+										[]));
+							},
+							model.staggers)),
+						A2(
+						_elm_lang$html$Html$code,
+						_elm_lang$core$Native_List.fromArray(
+							[_user$project$Style$code]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('\nList.indexedMap\n    (\\i style ->\n        interrupt\n            [ wait (i * 0.1 * second)\n            , to [ left (px 1) ]\n            ] style\n    ) model.styles ')
+							]))
+					]))
+			]));
+};
+var _user$project$Main$springMovement = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
@@ -16415,7 +16484,7 @@ var _user$project$Main$cssFilters = function (model) {
 							[_user$project$Style$code]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html$text('\nto\n    [ greyscale 100 ]\n\n                    ')
+								_elm_lang$html$Html$text('\nto [ greyscale 100 ]\n                    ')
 							]))
 					]))
 			]));
@@ -17007,28 +17076,52 @@ var _user$project$Main$slides = _elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$Animation$opacity(1),
 						_user$project$Animation$display(_user$project$Animation$block)
-					])),
-			hiddenNote: ''
+					]))
 		}),
 		_user$project$Main$Custom(
-		{html: _user$project$Main$talkIntro, style: _user$project$Main$initialStyle, hiddenNote: ''}),
+		{html: _user$project$Main$talkIntro, style: _user$project$Main$initialStyle}),
 		_user$project$Main$Stepped(
 		{
-			title: 'How do we talk about animation?',
-			hiddenNote: 'OK, so I got this thing.  I need it to make it:',
+			title: 'what do we care about in animation?',
 			style: _user$project$Main$initialStyle,
 			steps: _elm_lang$core$Maybe$Just(
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$Main$bulletPoints(
 						_elm_lang$core$Native_List.fromArray(
-							['fade in and change position', 'then tell me it\'s done', 'then begin rotating until further notice']))
+							['composing animations easily'])),
+						_user$project$Main$bulletPoints(
+						_elm_lang$core$Native_List.fromArray(
+							['understanding how something will go from A to B'])),
+						_user$project$Main$bulletPoints(
+						_elm_lang$core$Native_List.fromArray(
+							['animating cool stuff']))
 					]))
 		}),
 		_user$project$Main$Stepped(
 		{
-			title: 'A list as our interface',
-			hiddenNote: 'OK, so I got this thing.  I need it to make it:',
+			title: 'how do we talk about animation?',
+			style: _user$project$Main$initialStyle,
+			steps: _elm_lang$core$Maybe$Just(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$Main$bulletPoints(
+						_elm_lang$core$Native_List.fromArray(
+							['ok, I got this thing'])),
+						_user$project$Main$bulletPoints(
+						_elm_lang$core$Native_List.fromArray(
+							['it needs to fade in and change position'])),
+						_user$project$Main$bulletPoints(
+						_elm_lang$core$Native_List.fromArray(
+							['then I need to know when its done'])),
+						_user$project$Main$bulletPoints(
+						_elm_lang$core$Native_List.fromArray(
+							['then it needs to rotate until ...whenever']))
+					]))
+		}),
+		_user$project$Main$Stepped(
+		{
+			title: 'a list as our interface (of course)',
 			style: _user$project$Main$initialStyle,
 			steps: _elm_lang$core$Maybe$Just(
 				_elm_lang$core$Native_List.fromArray(
@@ -17038,63 +17131,99 @@ var _user$project$Main$slides = _elm_lang$core$Native_List.fromArray(
 		}),
 		_user$project$Main$Stepped(
 		{
-			title: 'What if the animation is already doing something?',
-			hiddenNote: 'OK, so I got this thing.  I need it to make it:',
+			title: 'what if the animation is already doing something?',
 			style: _user$project$Main$initialStyle,
 			steps: _elm_lang$core$Maybe$Just(
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$Main$bulletPoints(
 						_elm_lang$core$Native_List.fromArray(
-							['Smoothly interrupt it', 'Queue up after it'])),
-						_user$project$Main$someCode('\nAnimation.interrupt\n    [ ourListofInstructions\n    ]\n\nAnimation.queue\n    [ ourListofInstructions\n    ]\n')
+							['smoothly interrupt it', 'queue up after it'])),
+						_user$project$Main$someCode('\ninterrupt\n    [ ourListofInstructions\n    ]\n\nqueue\n    [ ourListofInstructions\n    ]\n')
 					]))
 		}),
 		_user$project$Main$Stepped(
 		{
-			title: 'How do we get from A to B?',
-			hiddenNote: 'OK, so I got this thing.  I need it to make it:',
+			title: 'how do we get from A to B?',
 			style: _user$project$Main$initialStyle,
 			steps: _elm_lang$core$Maybe$Just(
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$Main$bulletPoints(
 						_elm_lang$core$Native_List.fromArray(
-							['Duration/Easing', 'Springs (default in elm-style-animation)']))
+							['duration + easing', 'springs']))
 					]))
 		}),
 		_user$project$Main$Stepped(
 		{
-			title: 'Intuition for Springs',
-			hiddenNote: 'You’re may be avoiding springs because no one gave you a good intuition about them.  And they’re hard to do in CSS Transitions.  You have two properties to specify to create a spring.  First, the stiffness, which says \'how fast does this move\'?  Second, the damping which says \'how fast does this settle?\'',
+			title: 'why springs?',
 			style: _user$project$Main$initialStyle,
 			steps: _elm_lang$core$Maybe$Just(
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$Main$bulletPoints(
 						_elm_lang$core$Native_List.fromArray(
-							['Stiffness - How fast does it move?', 'Damping - How fast does it settle?'])),
+							['easy to model clean interruptions'])),
 						_user$project$Main$bulletPoints(
 						_elm_lang$core$Native_List.fromArray(
-							['Duration is a secondary property of the spring.']))
+							['easier to adjust as an animation designer']))
 					]))
 		}),
 		_user$project$Main$Stepped(
-		{title: 'Avoiding Special Machinery', hiddenNote: 'OK, so I got this thing.  I need it to make it:', style: _user$project$Main$initialStyle, steps: _elm_lang$core$Maybe$Nothing}),
-		_user$project$Main$Custom(
-		{hiddenNote: 'OK, so I got this thing.  I need it to make it:', style: _user$project$Main$initialStyle, html: _user$project$Main$staggerMovement}),
-		_user$project$Main$Custom(
-		{hiddenNote: '', style: _user$project$Main$initialStyle, html: _user$project$Main$mouseMovement}),
+		{
+			title: 'why do springs seem more difficult?',
+			style: _user$project$Main$initialStyle,
+			steps: _elm_lang$core$Maybe$Just(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$Main$bulletPoints(
+						_elm_lang$core$Native_List.fromArray(
+							['very hard to model correctly in css animations'])),
+						_user$project$Main$bulletPoints(
+						_elm_lang$core$Native_List.fromArray(
+							['you have to build an intuition about them ']))
+					]))
+		}),
 		_user$project$Main$Stepped(
-		{title: 'Animating Cool Stuff!', hiddenNote: '', style: _user$project$Main$initialStyle, steps: _elm_lang$core$Maybe$Nothing}),
+		{
+			title: 'building an intuition for springs',
+			style: _user$project$Main$initialStyle,
+			steps: _elm_lang$core$Maybe$Just(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_user$project$Main$bulletPoints(
+						_elm_lang$core$Native_List.fromArray(
+							['stiffness '])),
+						_user$project$Main$bulletPoints(
+						_elm_lang$core$Native_List.fromArray(
+							[' - how fast does it move?'])),
+						_user$project$Main$bulletPoints(
+						_elm_lang$core$Native_List.fromArray(
+							['damping'])),
+						_user$project$Main$bulletPoints(
+						_elm_lang$core$Native_List.fromArray(
+							[' - how fast does it settle?'])),
+						_user$project$Main$bulletPoints(
+						_elm_lang$core$Native_List.fromArray(
+							['duration is a secondary property of the spring.']))
+					]))
+		}),
+		_user$project$Main$Stepped(
+		{title: 'animating cool stuff!', style: _user$project$Main$initialStyle, steps: _elm_lang$core$Maybe$Nothing}),
 		_user$project$Main$Custom(
-		{hiddenNote: '', style: _user$project$Main$initialStyle, html: _user$project$Main$cssFilters}),
+		{style: _user$project$Main$initialStyle, html: _user$project$Main$staggerMovement}),
 		_user$project$Main$Custom(
-		{hiddenNote: '', style: _user$project$Main$initialStyle, html: _user$project$Main$polygonTransitions}),
+		{style: _user$project$Main$initialStyle, html: _user$project$Main$mouseMovement}),
 		_user$project$Main$Custom(
-		{hiddenNote: '', style: _user$project$Main$initialStyle, html: _user$project$Main$shadowMovement}),
+		{style: _user$project$Main$initialStyle, html: _user$project$Main$cssFilters}),
 		_user$project$Main$Custom(
-		{html: _user$project$Main$thanks, style: _user$project$Main$initialStyle, hiddenNote: ''})
+		{style: _user$project$Main$initialStyle, html: _user$project$Main$polygonTransitions}),
+		_user$project$Main$Custom(
+		{style: _user$project$Main$initialStyle, html: _user$project$Main$shadowMovement}),
+		_user$project$Main$Stepped(
+		{title: 'go build beautiful things!', style: _user$project$Main$initialStyle, steps: _elm_lang$core$Maybe$Nothing}),
+		_user$project$Main$Custom(
+		{html: _user$project$Main$thanks, style: _user$project$Main$initialStyle})
 	]);
 var _user$project$Main$Grey = {ctor: 'Grey'};
 var _user$project$Main$view = function (model) {
@@ -17180,6 +17309,30 @@ var _user$project$Main$main = {
 									]))
 						}),
 					staggerIsLeft: true,
+					spring1: _user$project$Animation$style(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_user$project$Animation$left(
+								_user$project$Animation$px(0))
+							])),
+					spring2: _user$project$Animation$style(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_user$project$Animation$left(
+								_user$project$Animation$px(0))
+							])),
+					spring3: _user$project$Animation$style(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_user$project$Animation$left(
+								_user$project$Animation$px(0))
+							])),
+					spring4: _user$project$Animation$style(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_user$project$Animation$left(
+								_user$project$Animation$px(0))
+							])),
 					staggers: _elm_lang$core$Native_List.fromArray(
 						[
 							_user$project$Animation$style(

@@ -56,6 +56,10 @@ type alias Model =
     , slideSubIndex : Int
     , staggers : List Animation.State
     , staggerIsLeft : Bool
+    , spring1 : Animation.State
+    , spring2 : Animation.State
+    , spring3 : Animation.State
+    , spring4 : Animation.State
     }
 
 
@@ -63,12 +67,10 @@ type Slide
     = Stepped
         { title : String
         , steps : Maybe (List Step)
-        , hiddenNote : String
         , style : Animation.State
         }
     | Custom
         { html : Model -> Html Msg
-        , hiddenNote : String
         , style : Animation.State
         }
 
@@ -507,12 +509,12 @@ view model =
 viewSlide : Model -> Slide -> Html Msg
 viewSlide model slide =
     case slide of
-        Custom { html, style, hiddenNote } ->
+        Custom { html, style } ->
             div (Animation.render style)
                 [ html model
                 ]
 
-        Stepped { title, steps, hiddenNote, style } ->
+        Stepped { title, steps, style } ->
             div
                 (Style.frame :: Animation.render style)
                 [ h1 [] [ text title ]
@@ -571,29 +573,48 @@ slides =
     [ Custom
         { html = cornell
         , style = Animation.style [ Animation.opacity 1, Animation.display Animation.block ]
-        , hiddenNote = ""
         }
     , Custom
         { html = talkIntro
         , style = initialStyle
-        , hiddenNote = ""
         }
     , Stepped
-        { title = "How do we talk about animation?"
-        , hiddenNote = "OK, so I got this thing.  I need it to make it:"
+        { title = "what do we care about in animation?"
         , style = initialStyle
         , steps =
             Just
                 [ bulletPoints
-                    [ "fade in and change position"
-                    , "then tell me it's done"
-                    , "then begin rotating until further notice"
+                    [ "composing animations easily"
+                    ]
+                , bulletPoints
+                    [ "understanding how something will go from A to B"
+                    ]
+                , bulletPoints
+                    [ "animating cool stuff"
                     ]
                 ]
         }
     , Stepped
-        { title = "A list as our interface"
-        , hiddenNote = "OK, so I got this thing.  I need it to make it:"
+        { title = "how do we talk about animation?"
+        , style = initialStyle
+        , steps =
+            Just
+                [ bulletPoints
+                    [ "ok, I got this thing"
+                    ]
+                , bulletPoints
+                    [ "it needs to fade in and change position"
+                    ]
+                , bulletPoints
+                    [ "then I need to know when its done"
+                    ]
+                , bulletPoints
+                    [ "then it needs to rotate until ...whenever"
+                    ]
+                ]
+        }
+    , Stepped
+        { title = "a list as our interface (of course)"
         , style = initialStyle
         , steps =
             Just
@@ -611,94 +632,113 @@ slides =
                 ]
         }
     , Stepped
-        { title = "What if the animation is already doing something?"
-        , hiddenNote = "OK, so I got this thing.  I need it to make it:"
+        { title = "what if the animation is already doing something?"
         , style = initialStyle
         , steps =
             Just
                 [ bulletPoints
-                    [ "Smoothly interrupt it"
-                    , "Queue up after it"
+                    [ "smoothly interrupt it"
+                    , "queue up after it"
                     ]
                 , someCode """
-Animation.interrupt
+interrupt
     [ ourListofInstructions
     ]
 
-Animation.queue
+queue
     [ ourListofInstructions
     ]
 """
                 ]
         }
     , Stepped
-        { title = "How do we get from A to B?"
-        , hiddenNote = "OK, so I got this thing.  I need it to make it:"
+        { title = "how do we get from A to B?"
         , style = initialStyle
         , steps =
             Just
                 [ bulletPoints
-                    [ "Duration/Easing"
-                    , "Springs (default in elm-style-animation)"
+                    [ "duration + easing"
+                    , "springs"
                     ]
                 ]
         }
     , Stepped
-        { title = "Intuition for Springs"
-        , hiddenNote = "You’re may be avoiding springs because no one gave you a good intuition about them.  And they’re hard to do in CSS Transitions.  You have two properties to specify to create a spring.  First, the stiffness, which says 'how fast does this move'?  Second, the damping which says 'how fast does this settle?'"
+        { title = "why springs?"
         , style = initialStyle
         , steps =
             Just
                 [ bulletPoints
-                    [ "Stiffness - How fast does it move?"
-                    , "Damping - How fast does it settle?"
+                    [ "easy to model clean interruptions"
                     ]
                 , bulletPoints
-                    [ "Duration is a secondary property of the spring."
+                    [ "easier to adjust as an animation designer"
                     ]
                 ]
         }
     , Stepped
-        { title = "Avoiding Special Machinery"
-        , hiddenNote = "OK, so I got this thing.  I need it to make it:"
+        { title = "why do springs seem more difficult?"
+        , style = initialStyle
+        , steps =
+            Just
+                [ bulletPoints
+                    [ "very hard to model correctly in css animations"
+                    ]
+                , bulletPoints
+                    [ "you have to build an intuition about them "
+                    ]
+                ]
+        }
+    , Stepped
+        { title = "building an intuition for springs"
+        , style = initialStyle
+        , steps =
+            Just
+                [ bulletPoints
+                    [ "stiffness " ]
+                , bulletPoints
+                    [ " - how fast does it move?" ]
+                , bulletPoints
+                    [ "damping" ]
+                , bulletPoints
+                    [ " - how fast does it settle?" ]
+                , bulletPoints
+                    [ "duration is a secondary property of the spring."
+                    ]
+                ]
+        }
+    , Stepped
+        { title = "animating cool stuff!"
         , style = initialStyle
         , steps = Nothing
         }
     , Custom
-        { hiddenNote = "OK, so I got this thing.  I need it to make it:"
-        , style = initialStyle
+        { style = initialStyle
         , html = staggerMovement
         }
     , Custom
-        { hiddenNote = ""
-        , style = initialStyle
+        { style = initialStyle
         , html = mouseMovement
         }
-    , Stepped
-        { title = "Animating Cool Stuff!"
-        , hiddenNote = ""
-        , style = initialStyle
-        , steps = Nothing
-        }
     , Custom
-        { hiddenNote = ""
-        , style = initialStyle
+        { style = initialStyle
         , html = cssFilters
         }
     , Custom
-        { hiddenNote = ""
-        , style = initialStyle
+        { style = initialStyle
         , html = polygonTransitions
         }
     , Custom
-        { hiddenNote = ""
-        , style = initialStyle
+        { style = initialStyle
         , html = shadowMovement
+        }
+    , Stepped
+        { title = "go build beautiful things!"
+        , style = initialStyle
+        , steps = Nothing
         }
     , Custom
         { html = thanks
         , style = initialStyle
-        , hiddenNote = ""
         }
     ]
 
@@ -752,9 +792,7 @@ cssFilters model =
         , div [ Style.horizontal ]
             [ img (Animation.render model.cssFilter ++ [ src "img/cat.jpeg", onClick ActivateFilter ]) []
             , Html.code [ Style.code ] [ text """
-to
-    [ greyscale 100 ]
-
+to [ greyscale 100 ]
                     """ ]
             ]
         ]
@@ -780,6 +818,29 @@ to
 
 
 staggerMovement model =
+    div [ Style.frame ]
+        [ h1 [] [ text "Stagger Movement" ]
+        , div [ Style.horizontal ]
+            [ div [ onClick ToggleStagger, Style.staggerBox ]
+                (List.map
+                    (\style ->
+                        div (Animation.render style ++ [ Style.staggerDot ]) []
+                    )
+                    model.staggers
+                )
+            , Html.code [ Style.code ] [ text """
+List.indexedMap
+    (\\i style ->
+        interrupt
+            [ wait (i * 0.1 * second)
+            , to [ left (px 1) ]
+            ] style
+    ) model.styles """ ]
+            ]
+        ]
+
+
+springMovement model =
     div [ Style.frame ]
         [ h1 [] [ text "Stagger Movement" ]
         , div [ Style.horizontal ]
@@ -847,6 +908,7 @@ thanks model =
                 [ li [] [ text "mdgriffith/elm-style-animation v3.0.0" ]
                 , li [] [ text "kitten image from placekitten.com " ]
                 , li [] [ text "special thanks to the organizers of ElmConf!" ]
+                , li [] [ text "slides at github.com/mdgriffith/elm-rich-animation-talk" ]
                 ]
             ]
         ]
@@ -895,6 +957,14 @@ main =
                                 [ Animation.rotate (turn 0) ]
                         }
               , staggerIsLeft = True
+              , spring1 =
+                    Animation.style [ Animation.left (px 0) ]
+              , spring2 =
+                    Animation.style [ Animation.left (px 0) ]
+              , spring3 =
+                    Animation.style [ Animation.left (px 0) ]
+              , spring4 =
+                    Animation.style [ Animation.left (px 0) ]
               , staggers =
                     [ Animation.style [ Animation.left (px 0) ]
                     , Animation.style [ Animation.left (px 0) ]
